@@ -283,6 +283,50 @@ GET /api/public/kategori
 
 ---
 
+### 3.4 List Master Spesialis
+
+```
+GET /api/public/spesialis
+```
+
+**Response `200`:**
+
+```json
+{
+  "success": true,
+  "data": [
+    {
+      "id": 1,
+      "nama_spesialis": "Penyakit Dalam"
+    }
+  ]
+}
+```
+
+---
+
+### 3.5 List Master Jenis Fasilitas
+
+```
+GET /api/public/jenis-fasilitas
+```
+
+**Response `200`:**
+
+```json
+{
+  "success": true,
+  "data": [
+    {
+      "id": 1,
+      "nama_fasilitas": "ICU"
+    }
+  ]
+}
+```
+
+---
+
 ## 4. Private Endpoints (JWT Required)
 
 **Role yang diizinkan:** `user`, `admin`
@@ -434,7 +478,29 @@ Tanpa ownership check.
 
 ---
 
-### 5.4 CRUD User
+### 5.4 CRUD Spesialis & Jenis Fasilitas
+
+**Spesialis:**
+| Method | Endpoint | Aksi |
+|--------|----------|------|
+| GET | `/api/admin/spesialis` | List semua |
+| GET | `/api/admin/spesialis/:id` | Detail |
+| POST | `/api/admin/spesialis` | Tambah |
+| PUT | `/api/admin/spesialis/:id` | Update |
+| DELETE | `/api/admin/spesialis/:id` | Hapus |
+
+**Jenis Fasilitas:**
+| Method | Endpoint | Aksi |
+|--------|----------|------|
+| GET | `/api/admin/jenis-fasilitas` | List semua |
+| GET | `/api/admin/jenis-fasilitas/:id` | Detail |
+| POST | `/api/admin/jenis-fasilitas` | Tambah |
+| PUT | `/api/admin/jenis-fasilitas/:id` | Update |
+| DELETE | `/api/admin/jenis-fasilitas/:id` | Hapus |
+
+---
+
+### 5.5 CRUD User
 
 | Method | Endpoint | Aksi |
 |--------|----------|------|
@@ -464,19 +530,18 @@ Tanpa ownership check.
 | GET | `/public/fasilitas` | — | — |
 | GET | `/public/fasilitas/:id` | — | — |
 | GET | `/public/kategori` | — | — |
+| GET | `/public/spesialis` | — | — |
+| GET | `/public/jenis-fasilitas` | — | — |
 | POST | `/private/fasilitas` | JWT | user, admin |
 | PUT | `/private/fasilitas/:id` | JWT | owner/admin |
 | DELETE | `/private/fasilitas/:id` | JWT | owner/admin |
 | GET | `/private/my-fasilitas` | JWT | user, admin |
 | GET | `/admin/all-fasilitas` | JWT | admin |
 | DELETE | `/admin/fasilitas/:id` | JWT | admin |
-| GET | `/admin/kategori` | JWT | admin |
-| POST | `/admin/kategori` | JWT | admin |
-| PUT | `/admin/kategori/:id` | JWT | admin |
-| DELETE | `/admin/kategori/:id` | JWT | admin |
-| GET | `/admin/users` | JWT | admin |
-| PUT | `/admin/users/:id` | JWT | admin |
-| DELETE | `/admin/users/:id` | JWT | admin |
+| GET/POST/PUT/DELETE | `/admin/kategori` | JWT | admin |
+| GET/POST/PUT/DELETE | `/admin/spesialis` | JWT | admin |
+| GET/POST/PUT/DELETE | `/admin/jenis-fasilitas` | JWT | admin |
+| GET/PUT/DELETE | `/admin/users` | JWT | admin |
 
 ---
 

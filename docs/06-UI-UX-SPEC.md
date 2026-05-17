@@ -153,7 +153,7 @@
 | State | Visual |
 |-------|--------|
 | Default | Icon bulat warna kategori, diameter 28px |
-| Active | Scale 1.3x, box-shadow glow warna kategori |
+| Active | Scale 1.3x, box-shadow glow warna kategori, animasi 3 gelombang radar pulse (radarPulse) |
 | User location | Icon biru (`#38BDF8`), pulse animation |
 | Cluster | Lingkaran hijau dengan angka count |
 
@@ -236,8 +236,8 @@ Muncul saat fasilitas dipilih. **Bukan sidebar form.**
 | jam_operasional | text | — |
 | status_24_jam | checkbox | — |
 | bpjs | checkbox | — |
-| dokter_spesialis | textarea | — |
-| fasilitas | textarea | — |
+| dokter_spesialis | dynamic row (dropdown jenis spesialis + input nama dokter) | — |
+| fasilitas | dynamic row (dropdown jenis fasilitas + input keterangan) | — |
 | deskripsi | textarea | — |
 | rating | number step 0.1 | — |
 | foto | file input | — |
@@ -273,7 +273,8 @@ Hanya visible jika user sudah login.
 ### 5.9 Tombol Rute
 
 - Di detail card: `[ Rute ke Lokasi ]`
-- Warna: `medical-green` outline
+- Warna tombol: `medical-green` outline
+- Warna jalur di peta: Biru (`#4285F4`), tebal 6px, ujung membulat (ala Google Maps)
 - Disabled jika lokasi user belum didapat
 - Saat aktif: tombol berubah jadi `[ Hapus Rute ]` merah outline
 
@@ -340,6 +341,8 @@ Hanya visible jika user sudah login.
 | Halaman | Komponen utama |
 |---------|----------------|
 | `/admin/kategori` | Tabel + modal CRUD kategori |
+| `/admin/spesialis` | Tabel + modal CRUD jenis spesialis dokter |
+| `/admin/jenis-fasilitas` | Tabel + modal CRUD jenis fasilitas (ICU, UGD, dll.) |
 | `/admin/users` | Tabel user + edit role |
 | `/admin/markers` | Tabel semua fasilitas + hapus |
 

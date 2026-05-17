@@ -224,6 +224,8 @@ Aturan "hanya marker milik sendiri" berlaku di **Dashboard, Marker Saya, dan Edi
 | `/admin/users` | Kelola User | CRUD user |
 | `/admin/markers` | Semua Marker | Semua fasilitas |
 | `/admin/kategori` | Master Kategori | CRUD kategori |
+| `/admin/spesialis` | Master Spesialis | CRUD jenis spesialis dokter |
+| `/admin/jenis-fasilitas` | Master Jenis Fasilitas | CRUD jenis fasilitas (ICU, UGD, dll) |
 
 ---
 

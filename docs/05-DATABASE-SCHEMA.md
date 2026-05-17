@@ -14,6 +14,18 @@ erDiagram
   users ||--o{ fasilitas_kesehatan : creates
   kategori ||--o{ fasilitas_kesehatan : categorizes
 
+  master_spesialis {
+    serial id PK
+    varchar nama_spesialis UK
+    timestamp created_at
+  }
+
+  master_jenis_fasilitas {
+    serial id PK
+    varchar nama_fasilitas UK
+    timestamp created_at
+  }
+
   users {
     serial id PK
     varchar nama
@@ -86,7 +98,27 @@ CREATE TABLE kategori (
 );
 ```
 
-### 2.3 Tabel `fasilitas_kesehatan`
+### 2.3 Tabel `master_spesialis`
+
+```sql
+CREATE TABLE master_spesialis (
+  id              SERIAL PRIMARY KEY,
+  nama_spesialis  VARCHAR(100) NOT NULL UNIQUE,
+  created_at      TIMESTAMP DEFAULT NOW()
+);
+```
+
+### 2.4 Tabel `master_jenis_fasilitas`
+
+```sql
+CREATE TABLE master_jenis_fasilitas (
+  id              SERIAL PRIMARY KEY,
+  nama_fasilitas  VARCHAR(100) NOT NULL UNIQUE,
+  created_at      TIMESTAMP DEFAULT NOW()
+);
+```
+
+### 2.5 Tabel `fasilitas_kesehatan`
 
 ```sql
 CREATE TABLE fasilitas_kesehatan (
@@ -248,11 +280,13 @@ SELECT created_by FROM fasilitas_kesehatan WHERE id = $1;
 ```
 backend/migrations/
   001_create_users.sql
-  002_create_kategori.sql
-  003_create_fasilitas_kesehatan.sql
+  002_master_tables.sql
+  003_create_kategori.sql
+  004_create_fasilitas_kesehatan.sql
 backend/seeds/
   001_seed_kategori.sql
   002_seed_admin.sql
+  003_seed_master.sql
 ```
 
 ---
