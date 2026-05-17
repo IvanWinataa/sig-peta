@@ -44,13 +44,16 @@ export default function FacilityDetailCard({
   const fasilitasLines = formatFasilitasDisplay(facility.fasilitas, masterJenisFasilitas);
 
   return (
-    <div className="card-slide-in flex flex-col h-full">
+    <div className="card-slide-in flex flex-col h-full p-6">
       {fotoUrl && (
-        <img
-          src={fotoUrl}
-          alt={facility.nama_fasilitas}
-          className="w-full h-40 object-cover rounded-xl mb-4"
-        />
+        <div className="relative -mx-6 -mt-6 mb-5 overflow-hidden shadow-sm shrink-0">
+          <img
+            src={fotoUrl}
+            alt={facility.nama_fasilitas}
+            className="w-full h-44 object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
+        </div>
       )}
       <h3 className="text-xl font-bold text-gray-900">{facility.nama_fasilitas}</h3>
       <p
@@ -61,9 +64,9 @@ export default function FacilityDetailCard({
         {facility.nama_kategori}
       </p>
 
-      <div className="mt-4 space-y-3 text-sm text-gray-600 flex-1 overflow-y-auto">
-        <p className="flex gap-2">
-          <MapPin className="w-4 h-4 shrink-0 text-emerald-600" />
+      <div className="mt-5 space-y-3.5 text-sm text-slate-600 flex-1 overflow-y-auto px-1">
+        <p className="flex gap-2.5">
+          <MapPin className="w-4 h-4 shrink-0 text-teal-600 mt-0.5" />
           {facility.alamat}
         </p>
         {facility.no_telepon && (
@@ -84,15 +87,15 @@ export default function FacilityDetailCard({
             {facility.jam_operasional}
           </p>
         )}
-        <div className="flex gap-2 flex-wrap">
+        <div className="flex gap-2 flex-wrap pt-1">
           {facility.bpjs && (
-            <span className="px-2 py-0.5 bg-emerald-100 text-emerald-700 rounded text-xs font-medium">
-              BPJS
+            <span className="px-2.5 py-1 bg-teal-100 text-teal-800 rounded-full text-xs font-semibold shadow-sm">
+              BPJS Tersedia
             </span>
           )}
           {facility.status_24_jam && (
-            <span className="px-2 py-0.5 bg-orange-100 text-orange-700 rounded text-xs font-medium">
-              24 Jam
+            <span className="px-2.5 py-1 bg-orange-100 text-orange-800 rounded-full text-xs font-semibold shadow-sm">
+              Buka 24 Jam
             </span>
           )}
         </div>
@@ -135,10 +138,10 @@ export default function FacilityDetailCard({
         <button
           type="button"
           onClick={onRoute}
-          className={`w-full flex items-center justify-center gap-2 py-2.5 rounded-xl font-semibold text-sm border-2 transition-colors ${
+          className={`w-full flex items-center justify-center gap-2 py-3 rounded-2xl font-bold text-sm transition-all shadow-sm ${
             routing
-              ? 'border-red-300 text-red-600 bg-red-50'
-              : 'border-emerald-500 text-emerald-700 bg-emerald-50 hover:bg-emerald-100'
+              ? 'bg-red-50 text-red-600 border border-red-200 hover:bg-red-100'
+              : 'bg-teal-600 text-white shadow-teal-600/30 shadow-lg hover:bg-teal-700 hover:shadow-teal-700/40 hover:-translate-y-0.5'
           }`}
         >
           <Navigation className="w-4 h-4" />
@@ -149,14 +152,14 @@ export default function FacilityDetailCard({
             <button
               type="button"
               onClick={onEdit}
-              className="flex-1 flex items-center justify-center gap-1 py-2 rounded-xl bg-gray-100 text-gray-700 text-sm font-medium hover:bg-gray-200"
+              className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-2xl bg-slate-100 text-slate-700 text-sm font-semibold hover:bg-slate-200 transition-colors"
             >
               <Pencil className="w-4 h-4" /> Edit
             </button>
             <button
               type="button"
               onClick={onDelete}
-              className="flex items-center justify-center gap-1 px-4 py-2 rounded-xl bg-red-50 text-red-600 text-sm font-medium hover:bg-red-100"
+              className="flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-2xl bg-red-50 text-red-600 text-sm font-semibold hover:bg-red-100 transition-colors"
             >
               <Trash2 className="w-4 h-4" />
             </button>

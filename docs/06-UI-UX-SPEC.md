@@ -13,9 +13,9 @@
 |---------|--------------|
 | User-first | Label bahasa Indonesia, ikon jelas, minim jargon teknis |
 | Fokus peta + list | Sidebar kiri = navigasi data; tengah = peta; kanan = detail |
-| Tidak overload | Form CRUD di **modal**, bukan sidebar penuh |
-| Feedback visual | Highlight marker, animasi card, toast notifikasi |
-| Aksesibilitas | Kontras teks cukup, tombol min 40px tinggi |
+| Estetika Modern | Penggunaan efek *Glassmorphism*, *floating panels*, dan *hover-lift* animasi mikro |
+| Feedback visual | Highlight marker, animasi card, toast notifikasi, *gradient glow* pada UI |
+| Aksesibilitas | Kontras teks cukup, tombol membulat (*rounded-full* / pill shape) min 40px tinggi |
 
 ---
 
@@ -23,15 +23,15 @@
 
 | Token | Hex | Penggunaan |
 |-------|-----|------------|
-| `white` | `#FFFFFF` | Background utama, card |
-| `medical-green` | `#10B981` | Primary button, active state, logo accent |
-| `medical-green-dark` | `#059669` | Hover button, heading accent |
-| `sky-light` | `#E0F2FE` | Background sidebar, badge |
-| `sky` | `#38BDF8` | Link, icon lokasi user |
-| `gray-50` | `#F9FAFB` | Background halaman |
-| `gray-200` | `#E5E7EB` | Border, divider |
-| `gray-700` | `#374151` | Teks body |
-| `gray-900` | `#111827` | Heading |
+| `white` | `#FFFFFF` | Background utama, card, *glass panels* |
+| `teal-600` | `#0D9488` | Primary button, active state, logo accent (utama) |
+| `teal-700` | `#0F766E` | Hover button, heading accent |
+| `sky-50` | `#F0F9FF` | Background sidebar ringan, badge |
+| `sky-500` | `#0EA5E9` | Gradien sekunder, *glowing orbs* di latar belakang |
+| `slate-50` | `#F8FAFC` | Background halaman, *base panel* |
+| `slate-200` | `#E2E8F0` | Border, divider lembut |
+| `slate-600` | `#475569` | Teks body / deskripsi |
+| `slate-900` | `#0F172A` | Heading / judul utama |
 | `danger` | `#EF4444` | Hapus, error |
 | `warning` | `#F59E0B` | Peringatan |
 
@@ -43,11 +43,11 @@
 
 | Elemen | Font | Size | Weight |
 |--------|------|------|--------|
-| H1 (page title) | Inter / system-ui | 28px | 700 |
-| H2 (section) | Inter | 20px | 600 |
-| Body | Inter | 14px | 400 |
-| Caption / label | Inter | 12px | 500 |
-| Button | Inter | 14px | 600 |
+| H1 (page title) | Plus Jakarta Sans | 28px - 72px | 700 / 800 |
+| H2 (section) | Plus Jakarta Sans | 20px | 600 / 700 |
+| Body | Plus Jakarta Sans | 14px | 400 |
+| Caption / label | Plus Jakarta Sans | 12px | 500 / 600 |
+| Button | Plus Jakarta Sans | 14px | 600 / 700 |
 
 ---
 
@@ -67,9 +67,9 @@
 - Jika login: Dashboard, Marker Saya (user) / menu Admin (admin)
 - Tombol **Lokasi Saya** (icon pin biru)
 - Toggle **View / Edit Mode** (hanya jika login)
-- Avatar / Login button (kanan)
+- Avatar / Login button (kanan) bergaya membulat penuh (*pill*)
 
-**Tinggi:** 64px, fixed top, shadow ringan, background putih.
+**Visual:** 64px, *sticky top*, *glassmorphism* (background putih transparan + blur), *shadow* lembut, tanpa border bawah keras.
 
 ---
 
@@ -92,11 +92,11 @@
 
 | Panel | Lebar | Konten |
 |-------|-------|--------|
-| Kiri | 280–320px, fixed | Search, filter kategori (chip), list fasilitas scrollable |
-| Tengah | `flex: 1` | Peta Leaflet full height |
-| Kanan | 320px, collapsible | Card detail fasilitas aktif — **bukan form** |
+| Kiri | 320px, floating | Search, filter kategori (chip), list fasilitas scrollable. Menggunakan gaya *glass panel* mengambang (`margin: 1rem`, `shadow-2xl`, `rounded-3xl`). |
+| Tengah | Penuh | Peta Leaflet berada di lapisan terbawah (z-index 0) sehingga panel-panel tampak mengambang di atas peta. |
+| Kanan | 340px, floating | Card detail fasilitas aktif, bergaya sama seperti panel kiri (mengambang, sudut melengkung besar). |
 
-**Mobile (< 768px):** Sidebar kiri jadi drawer bawah; detail card jadi bottom sheet.
+**Mobile (< 768px):** Sidebar kiri jadi panel layar penuh; detail card jadi *bottom sheet*.
 
 ---
 
@@ -142,9 +142,9 @@
 ```
 
 **State:**
-- Default: border transparan, background putih
-- Hover: background `sky-light`, marker di peta ikut preview highlight
-- Active: border kiri 4px `medical-green`, background `#ECFDF5`
+- Default: border transparan, background putih, *hover-lift* animasi
+- Hover: background `slate-50`, sedikit naik (`translate-y`), muncul bayangan
+- Active: border kiri 4px `teal-500`, background `teal-50`, ada pendaran ring tipis `ring-teal-500/20`
 
 ---
 
@@ -175,24 +175,24 @@ Muncul saat fasilitas dipilih. **Bukan sidebar form.**
 
 ```
 ┌──────────────────────────┐
-│  [Foto fasilitas]        │
+│  (Gambar meluas ke atas batas dengan gradient transparan di bagian bawah)
 │  RSUD Bali Mandara       │
 │  🏥 Rumah Sakit          │
 │  ─────────────────────   │
 │  📍 Jl. Bypass...        │
 │  📞 0361-123456          │
 │  🕐 24 Jam               │
-│  ✓ BPJS Tersedia         │
+│  (Pill) BPJS Tersedia    │
 │  ⭐ 4.5                  │
 │  Spesialis: Dalam, Anak  │
 │  Fasilitas: ICU, UGD     │
 │  ─────────────────────   │
-│  [ 🗺 Rute ke Lokasi ]   │
+│  [ 🗺 Rute ke Lokasi ]   │ (Glow hover effect)
 │  [ ✏️ Edit ] (jika owner) │
 └──────────────────────────┘
 ```
 
-**Animasi:** slide-in dari kanan, duration 250ms, ease-out.
+**Animasi:** slide-in dari kanan, duration 350ms, gaya kubik bezier (halus). Kontainer memiliki padding internal `p-6` agar teks tidak terpotong saat gambar tidak ada.
 
 ---
 
@@ -273,8 +273,8 @@ Hanya visible jika user sudah login.
 ### 5.9 Tombol Rute
 
 - Di detail card: `[ Rute ke Lokasi ]`
-- Warna tombol: `medical-green` outline
-- Warna jalur di peta: Biru (`#4285F4`), tebal 6px, ujung membulat (ala Google Maps)
+- Warna tombol: `teal-600` solid dengan bayangan cahaya (*glow shadow*)
+- Warna jalur di peta: Biru OSM (`#4285F4`), tebal 6px, ujung membulat (ala Google Maps)
 - Disabled jika lokasi user belum didapat
 - Saat aktif: tombol berubah jadi `[ Hapus Rute ]` merah outline
 
@@ -352,17 +352,19 @@ Style konsisten dengan halaman user, badge role admin warna ungu.
 
 ## 10. Home Page `/`
 
-**Hero section:**
-- Judul: "Temukan Fasilitas Kesehatan di Bali"
+**Hero section (Redesigned):**
+- Judul: "Temukan Fasilitas Kesehatan di Bali" (teks 'Bali' menggunakan *gradient clip-text*)
 - Subtitle: untuk masyarakat, mahasiswa rantau, wisatawan
-- CTA: "Jelajahi Peta" → `/explore`
-- CTA sekunder: "Lihat Data" → `/data-fasilitas`
-- Background: gradient putih ke `sky-light`
+- Latar Belakang (Background Decor): Bola cahaya *glowing* abstrak (*blur* 100px) menggunakan warna `teal` dan `sky`.
+- Elemen *Badge*: Badge "Sistem Informasi Geografis Terpadu" berkedip di atas judul.
+- CTA Utama: "Jelajahi Peta" dengan animasi panah bergeser saat di-hover.
+- CTA Sekunder: "Lihat Data Tabel" bergaya tombol garis berbatas (*outlined*).
 
-**Feature cards (3 kolom):**
+**Feature cards (3 kolom, floating glassmorphism):**
 1. Peta Interaktif + Cluster
 2. Navigasi Rute
 3. Data Lengkap & Terfilter
+- Kartu menggunakan gaya `.glass-panel` dan ikon warna-warni yang kontras.
 
 ---
 

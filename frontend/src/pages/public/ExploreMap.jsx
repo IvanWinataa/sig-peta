@@ -131,18 +131,32 @@ export default function ExploreMap() {
         onLocateMe={handleLocate}
       />
 
-      <div className="flex flex-1 min-h-0">
-        {/* Sidebar kiri */}
-        <aside className="w-[300px] shrink-0 bg-white border-r border-gray-200 flex flex-col">
-          <div className="p-4 border-b border-gray-100 space-y-3">
+      <div className="flex flex-1 min-h-0 relative">
+        {/* Peta tengah — ditaruh paling bawah (z-0) agar panel bisa melayang */}
+        <main className="absolute inset-0 z-0 bg-slate-100">
+          <LeafletMap
+            facilities={filtered}
+            activeId={activeId}
+            onMarkerClick={(f) => setActiveId(f.id)}
+            onMapClick={handleMapClick}
+            editMode={editMode && !!user}
+            userLocation={userLocation}
+            showRoute={routing}
+            routeTarget={activeFacility}
+          />
+        </main>
+
+        {/* Sidebar kiri (Floating) */}
+        <aside className="w-[320px] shrink-0 glass-panel flex flex-col z-10 m-4 rounded-3xl overflow-hidden shadow-2xl transition-all">
+          <div className="p-4 border-b border-slate-200/50 space-y-3 bg-white/50">
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
               <input
                 type="search"
-                placeholder="Cari nama, alamat, kategori..."
+                placeholder="Cari fasilitas..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="w-full pl-9 pr-3 py-2 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none"
+                className="w-full pl-9 pr-3 py-2.5 text-sm bg-white/80 border border-slate-200/60 rounded-xl focus:ring-2 focus:ring-teal-500 outline-none shadow-sm transition-all placeholder:text-slate-400 font-medium"
               />
             </div>
             <CategoryFilter kategori={kategori} selectedIds={selectedKategori} onChange={setSelectedKategori} />
@@ -161,24 +175,14 @@ export default function ExploreMap() {
           </div>
         </aside>
 
-        {/* Peta tengah — Leaflet.js vanilla */}
-        <main className="flex-1 relative min-w-0">
-          <LeafletMap
-            facilities={filtered}
-            activeId={activeId}
-            onMarkerClick={(f) => setActiveId(f.id)}
-            onMapClick={handleMapClick}
-            editMode={editMode && !!user}
-            userLocation={userLocation}
-            showRoute={routing}
-            routeTarget={activeFacility}
-          />
-        </main>
+        {/* Spacer agar kanan bisa diatur ke ujung jika flex */}
+        <div className="flex-1 pointer-events-none z-10"></div>
 
-        {/* Panel kanan — detail card */}
-        <aside className="w-[320px] shrink-0 bg-white border-l border-gray-200 p-4 hidden lg:flex flex-col">
-          <FacilityDetailCard
-            facility={activeFacility}
+        {/* Panel kanan — detail card (Floating) */}
+        <aside className="w-[340px] shrink-0 z-10 m-4 hidden lg:flex flex-col pointer-events-none">
+          <div className="glass-panel h-full w-full rounded-3xl overflow-hidden shadow-2xl pointer-events-auto">
+            <FacilityDetailCard
+              facility={activeFacility}
             masterSpesialis={masterSpesialis}
             masterJenisFasilitas={masterJenisFasilitas}
             onRoute={() => {
@@ -190,9 +194,10 @@ export default function ExploreMap() {
             }}
             routing={routing}
             canEdit={canEdit}
-            onEdit={() => { setEditing(activeFacility); setModalOpen(true); }}
-            onDelete={handleDelete}
-          />
+              onEdit={() => { setEditing(activeFacility); setModalOpen(true); }}
+              onDelete={handleDelete}
+            />
+          </div>
         </aside>
       </div>
 

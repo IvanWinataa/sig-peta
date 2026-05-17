@@ -7,13 +7,13 @@ export default function Topbar({ editMode, onToggleEditMode, onLocateMe }) {
   const navigate = useNavigate();
 
   const linkClass = ({ isActive }) =>
-    `px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-      isActive ? 'bg-emerald-50 text-emerald-700' : 'text-gray-600 hover:bg-gray-100'
+    `px-4 py-2 rounded-full text-sm font-semibold transition-all ${
+      isActive ? 'bg-teal-50 text-teal-700 shadow-sm' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
     }`;
 
   return (
-    <header className="h-16 bg-white border-b border-gray-200 flex items-center px-4 gap-4 shrink-0 z-20">
-      <Link to="/" className="flex items-center gap-2 font-bold text-emerald-700 shrink-0">
+    <header className="h-16 glass flex items-center px-4 gap-4 shrink-0 z-20 sticky top-0 shadow-sm border-b-0">
+      <Link to="/" className="flex items-center gap-2 font-extrabold text-teal-700 shrink-0 text-lg tracking-tight">
         <MapPin className="w-6 h-6" />
         <span className="hidden sm:inline">HealthMap Bali</span>
       </Link>
@@ -54,18 +54,18 @@ export default function Topbar({ editMode, onToggleEditMode, onLocateMe }) {
         )}
 
         {user && onToggleEditMode && (
-          <div className="flex rounded-lg border border-gray-200 overflow-hidden text-xs font-semibold">
+          <div className="flex rounded-full border border-slate-200 overflow-hidden text-xs font-semibold shadow-inner bg-slate-50">
             <button
               type="button"
               onClick={() => editMode && onToggleEditMode()}
-              className={`px-3 py-2 ${!editMode ? 'bg-gray-100 text-gray-800' : 'text-gray-500'}`}
+              className={`px-4 py-2 transition-all ${!editMode ? 'bg-white text-slate-800 shadow shadow-slate-200/50 rounded-full' : 'text-slate-500 hover:text-slate-700'}`}
             >
               View
             </button>
             <button
               type="button"
               onClick={() => !editMode && onToggleEditMode()}
-              className={`px-3 py-2 ${editMode ? 'bg-emerald-600 text-white' : 'text-gray-500'}`}
+              className={`px-4 py-2 transition-all ${editMode ? 'bg-teal-600 text-white shadow rounded-full' : 'text-slate-500 hover:text-slate-700'}`}
             >
               Edit
             </button>
@@ -74,22 +74,23 @@ export default function Topbar({ editMode, onToggleEditMode, onLocateMe }) {
 
         {user ? (
           <div className="flex items-center gap-2">
-            <span className="hidden sm:flex items-center gap-1 text-sm text-gray-600">
-              <User className="w-4 h-4" />
+            <span className="hidden sm:flex items-center gap-1.5 text-sm font-medium text-slate-700 bg-white px-3 py-1.5 rounded-full border border-slate-200 shadow-sm">
+              <User className="w-4 h-4 text-teal-600" />
               {user.nama}
             </span>
             <button
               type="button"
               onClick={() => { logout(); navigate('/'); }}
-              className="flex items-center gap-1 px-3 py-2 text-sm text-red-600 hover:bg-red-50 rounded-lg"
+              className="flex items-center gap-1 p-2 text-red-500 hover:bg-red-50 hover:text-red-600 rounded-full transition-colors"
+              title="Logout"
             >
-              <LogOut className="w-4 h-4" />
+              <LogOut className="w-5 h-5" />
             </button>
           </div>
         ) : (
           <Link
             to="/login"
-            className="flex items-center gap-1 px-4 py-2 text-sm font-semibold text-white bg-emerald-600 rounded-lg hover:bg-emerald-700"
+            className="flex items-center gap-1 px-5 py-2 text-sm font-semibold text-white bg-teal-600 rounded-full hover:bg-teal-700 hover:shadow-md transition-all"
           >
             <LogIn className="w-4 h-4" />
             Login
