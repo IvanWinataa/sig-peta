@@ -35,7 +35,7 @@ export default function Register() {
       <div className="w-full max-w-md bg-white rounded-2xl shadow-xl p-8">
         <div className="flex items-center justify-center gap-2 text-emerald-700 font-bold text-xl mb-6">
           <MapPin className="w-7 h-7" />
-          HealthMap Bali
+          BaliCare Map
         </div>
         <h1 className="text-2xl font-bold text-center text-gray-900">Daftar Akun</h1>
 

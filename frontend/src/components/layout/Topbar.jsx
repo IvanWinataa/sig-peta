@@ -1,5 +1,5 @@
 import { Link, NavLink, useNavigate } from 'react-router-dom';
-import { MapPin, LogIn, LogOut, User, Shield } from 'lucide-react';
+import { MapPin, LogIn, LogOut, User, Shield, ChevronDown } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 
 export default function Topbar({ editMode, onToggleEditMode, onLocateMe }) {
@@ -7,21 +7,42 @@ export default function Topbar({ editMode, onToggleEditMode, onLocateMe }) {
   const navigate = useNavigate();
 
   const linkClass = ({ isActive }) =>
-    `px-4 py-2 rounded-full text-sm font-semibold transition-all ${
-      isActive ? 'bg-teal-50 text-teal-700 shadow-sm' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
+    `px-4 py-2 rounded-full text-sm font-semibold transition-all whitespace-nowrap ${isActive ? 'bg-teal-50 text-teal-700 shadow-sm' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
+    }`;
+
+  const dropdownLinkClass = ({ isActive }) =>
+    `block px-4 py-2 text-sm font-medium transition-colors whitespace-nowrap ${isActive ? 'bg-teal-50 text-teal-700' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
     }`;
 
   return (
     <header className="h-16 glass flex items-center px-4 gap-4 shrink-0 z-20 sticky top-0 shadow-sm border-b-0">
       <Link to="/" className="flex items-center gap-2 font-extrabold text-teal-700 shrink-0 text-lg tracking-tight">
         <MapPin className="w-6 h-6" />
-        <span className="hidden sm:inline">HealthMap Bali</span>
+        <span className="hidden sm:inline">BaliCare Map</span>
       </Link>
 
-      <nav className="flex items-center gap-1 flex-1 overflow-x-auto">
+      <nav className="flex items-center gap-1 flex-1">
         <NavLink to="/" className={linkClass} end>Home</NavLink>
         <NavLink to="/explore" className={linkClass}>Explore Map</NavLink>
-        <NavLink to="/data-fasilitas" className={linkClass}>Data Fasilitas</NavLink>
+
+        <div className="relative group">
+          <button className="px-4 py-2 rounded-full text-sm font-semibold text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition-all flex items-center gap-1 whitespace-nowrap">
+            Kelola Data <ChevronDown className="w-4 h-4 transition-transform group-hover:rotate-180" />
+          </button>
+          <div className="absolute left-0 mt-1 w-48 bg-white rounded-xl shadow-lg border border-slate-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 flex flex-col py-2">
+            <NavLink to="/data-fasilitas" className={dropdownLinkClass}>Data Fasilitas</NavLink>
+            {isAdmin && (
+              <>
+                <div className="h-px bg-slate-100 my-1 mx-3"></div>
+                <NavLink to="/admin/kategori" className={dropdownLinkClass}>Kategori</NavLink>
+                <NavLink to="/admin/spesialis" className={dropdownLinkClass}>Spesialis</NavLink>
+                <NavLink to="/admin/jenis-fasilitas" className={dropdownLinkClass}>Jenis Fasilitas</NavLink>
+                <NavLink to="/admin/markers" className={dropdownLinkClass}>Semua Marker</NavLink>
+              </>
+            )}
+          </div>
+        </div>
+
         {user && (
           <>
             <NavLink to="/dashboard" className={linkClass}>Dashboard</NavLink>
@@ -29,15 +50,9 @@ export default function Topbar({ editMode, onToggleEditMode, onLocateMe }) {
           </>
         )}
         {isAdmin && (
-          <>
-            <NavLink to="/admin/kategori" className={linkClass}>Kategori</NavLink>
-            <NavLink to="/admin/spesialis" className={linkClass}>Spesialis</NavLink>
-            <NavLink to="/admin/jenis-fasilitas" className={linkClass}>Jenis Fasilitas</NavLink>
-            <NavLink to="/admin/markers" className={linkClass}>Semua Marker</NavLink>
-            <NavLink to="/admin/users" className={linkClass}>
-              <span className="flex items-center gap-1"><Shield className="w-4 h-4" /> User</span>
-            </NavLink>
-          </>
+          <NavLink to="/admin/users" className={linkClass}>
+            <span className="flex items-center gap-1"><Shield className="w-4 h-4" /> User</span>
+          </NavLink>
         )}
       </nav>
 

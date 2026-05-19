@@ -4,14 +4,18 @@ import { MapPin, Plus, Check, Clock } from 'lucide-react';
 import Topbar from '../../components/layout/Topbar';
 import ProtectedRoute from '../../components/layout/ProtectedRoute';
 import { getMyFasilitas } from '../../services/privateService';
+import { getAllFasilitas } from '../../services/adminService';
+import { useAuth } from '../../context/AuthContext';
 import { CategoryIcon } from '../../utils/categoryIcons';
 
 function DashboardContent() {
   const [data, setData] = useState([]);
+  const { isAdmin } = useAuth();
 
   useEffect(() => {
-    getMyFasilitas({ limit: 100 }).then((r) => setData(r.data.data));
-  }, []);
+    const fetchFn = isAdmin ? getAllFasilitas : getMyFasilitas;
+    fetchFn({ limit: 100 }).then((r) => setData(r.data.data));
+  }, [isAdmin]);
 
   const stats = {
     total: data.length,

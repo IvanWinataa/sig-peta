@@ -11,19 +11,19 @@ export default function Home() {
       <div className="absolute top-40 right-20 w-96 h-96 bg-sky-400/20 rounded-full blur-[120px] pointer-events-none" />
 
       <Topbar />
-      
+
       <main className="flex-1 relative z-10">
         <section className="max-w-5xl mx-auto px-6 py-20 md:py-28 text-center">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-teal-50 border border-teal-200 text-teal-700 text-sm font-bold mb-8 shadow-sm">
             <span className="w-2.5 h-2.5 rounded-full bg-teal-500 animate-pulse shadow-lg shadow-teal-500" />
             Sistem Informasi Geografis Terpadu
           </div>
-          
+
           <h1 className="text-5xl md:text-7xl font-extrabold text-slate-900 leading-[1.15] tracking-tight">
             Temukan Fasilitas <br className="hidden md:block" /> Kesehatan di <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-600 to-sky-500">Bali</span>
           </h1>
           <p className="mt-8 text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed">
-            HealthMap Bali membantu masyarakat, mahasiswa rantau, dan wisatawan menemukan rumah sakit,
+            BaliCare Map membantu masyarakat, mahasiswa rantau, dan wisatawan menemukan rumah sakit,
             klinik, puskesmas, apotek, dan layanan kesehatan lainnya dengan antarmuka yang modern dan cepat.
           </p>
           <div className="mt-12 flex flex-wrap justify-center gap-4">
@@ -45,7 +45,7 @@ export default function Home() {
         <section className="max-w-6xl mx-auto px-6 pb-20 grid md:grid-cols-3 gap-8">
           {[
             { icon: Map, title: 'Peta Interaktif', desc: 'Sistem marker cerdas dengan pengelompokan (cluster) untuk navigasi yang lebih rapi dan intuitif.', color: 'text-teal-600', bg: 'bg-teal-50' },
-            { icon: Navigation, title: 'Navigasi Rute', desc: 'Dapatkan rute dan estimasi perjalanan terbaik dari lokasi Anda saat ini menuju fasilitas.', color: 'text-sky-600', bg: 'bg-sky-50' },
+            { icon: Navigation, title: 'Navigasi Rute', desc: 'Dapatkan rute perjalanan terbaik dari lokasi Anda saat ini menuju fasilitas.', color: 'text-sky-600', bg: 'bg-sky-50' },
             { icon: Table, title: 'Data Lengkap', desc: 'Informasi komprehensif mulai dari jadwal, penerimaan BPJS, spesialis, hingga buka 24 jam.', color: 'text-indigo-600', bg: 'bg-indigo-50' },
           ].map(({ icon: Icon, title, desc, color, bg }) => (
             <div key={title} className="glass-panel p-8 rounded-3xl hover-lift">

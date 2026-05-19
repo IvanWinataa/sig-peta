@@ -30,7 +30,7 @@ export default function Login() {
       <div className="w-full max-w-md bg-white rounded-2xl shadow-xl p-8">
         <div className="flex items-center justify-center gap-2 text-emerald-700 font-bold text-xl mb-6">
           <MapPin className="w-7 h-7" />
-          HealthMap Bali
+          BaliCare Map
         </div>
         <h1 className="text-2xl font-bold text-center text-gray-900">Masuk</h1>
         <p className="text-center text-sm text-gray-500 mt-1 mb-6">Kelola marker fasilitas kesehatan Anda</p>
@@ -71,7 +71,7 @@ export default function Login() {
           Belum punya akun? <Link to="/register" className="text-emerald-600 font-medium">Daftar</Link>
         </p>
         <p className="text-center text-xs text-gray-400 mt-4">
-          Admin demo: admin@healthmapbali.id / admin123
+          Admin demo: admin@balicaremap.id / admin123
         </p>
       </div>
     </div>
