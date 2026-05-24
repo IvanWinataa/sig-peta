@@ -217,6 +217,22 @@ GET /api/public/fasilitas
       "deskripsi": "Rumah sakit rujukan utama",
       "rating": 4.5,
       "foto": "/uploads/rsud-bali.jpg",
+      "atribut_khusus": {
+        "tipe_rs": "Umum",
+        "kelas_rs": "A",
+        "bpjs": "Ya",
+        "igd": "Tersedia",
+        "icu": "Tersedia",
+        "ambulance": "Tersedia",
+        "jumlah_dokter": 50,
+        "jumlah_bed": 200,
+        "spesialis": "Jantung, Anak",
+        "apotek_internal": "Ada",
+        "laboratorium": "Ada",
+        "ruang_operasi": "Ada",
+        "website": "https://rsudbalimandara.id",
+        "parkir": "Luas"
+      },
       "created_by": 2,
       "created_at": "2026-01-15T08:00:00.000Z"
     }
@@ -269,13 +285,19 @@ GET /api/public/kategori
       "id": 1,
       "nama_kategori": "Rumah Sakit",
       "icon_marker": "hospital",
-      "warna_marker": "#EF4444"
+      "warna_marker": "#EF4444",
+      "skema_atribut": [
+        { "name": "tipe_rs", "label": "Tipe RS", "type": "select", "options": ["Umum", "Khusus"] }
+      ]
     },
     {
       "id": 2,
       "nama_kategori": "Klinik",
       "icon_marker": "clinic",
-      "warna_marker": "#3B82F6"
+      "warna_marker": "#3B82F6",
+      "skema_atribut": [
+        { "name": "jenis_klinik", "label": "Jenis Klinik", "type": "select", "options": ["Umum", "Gigi", "Kecantikan"] }
+      ]
     }
   ]
 }
@@ -356,7 +378,8 @@ POST /api/private/fasilitas
   "dokter_spesialis": "Umum, Gigi",
   "fasilitas": "Laboratorium, Farmasi",
   "deskripsi": "Klinik umum dekat pantai",
-  "rating": 4.0
+  "rating": 4.0,
+  "atribut_khusus": "{\"jenis_klinik\":\"Umum\",\"dokter_jaga\":\"Ada\",\"bpjs\":\"Ya\",\"layanan_vaksin\":\"Ada\",\"layanan_lab\":\"Ada\",\"praktek_dokter\":\"Senin - Sabtu\",\"reservasi_online\":\"Ada\",\"konsultasi_online\":\"Ada\",\"jumlah_ruangan\":5}"
 }
 ```
 
@@ -470,7 +493,11 @@ Tanpa ownership check.
 {
   "nama_kategori": "Rumah Sakit",
   "icon_marker": "hospital",
-  "warna_marker": "#EF4444"
+  "warna_marker": "#EF4444",
+  "skema_atribut": [
+    { "name": "tipe_rs", "label": "Tipe RS", "type": "select", "options": ["Umum", "Khusus"] },
+    { "name": "kelas_rs", "label": "Kelas RS", "type": "select", "options": ["A", "B", "C", "D"] }
+  ]
 }
 ```
 

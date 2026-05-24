@@ -40,6 +40,7 @@ erDiagram
     varchar nama_kategori UK
     varchar icon_marker
     varchar warna_marker
+    jsonb skema_atribut
     timestamp created_at
   }
 
@@ -60,6 +61,7 @@ erDiagram
     text deskripsi
     decimal rating
     varchar foto
+    jsonb atribut_khusus
     int created_by FK
     timestamp created_at
   }
@@ -94,6 +96,7 @@ CREATE TABLE kategori (
   nama_kategori VARCHAR(100) NOT NULL UNIQUE,
   icon_marker   VARCHAR(50)  NOT NULL,
   warna_marker  VARCHAR(20)  NOT NULL,
+  skema_atribut JSONB,
   created_at    TIMESTAMP NOT NULL DEFAULT NOW()
 );
 ```
@@ -138,6 +141,7 @@ CREATE TABLE fasilitas_kesehatan (
   deskripsi         TEXT,
   rating            DECIMAL(2, 1) CHECK (rating >= 0 AND rating <= 5),
   foto              VARCHAR(500),
+  atribut_khusus    JSONB,
   created_by        INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
   created_at        TIMESTAMP NOT NULL DEFAULT NOW()
 );
@@ -258,6 +262,8 @@ SELECT created_by FROM fasilitas_kesehatan WHERE id = $1;
 | `deskripsi` | `deskripsi` | TEXT |
 | `rating` | `rating` | DECIMAL |
 | `foto` | `foto` | VARCHAR |
+| `atribut_khusus` | `atribut_khusus` | JSONB |
+| `skema_atribut` | `skema_atribut` | JSONB |
 | `created_by` | `created_by` | INTEGER FK |
 | `created_at` | `created_at` | TIMESTAMP |
 
