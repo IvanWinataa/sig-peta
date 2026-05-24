@@ -183,15 +183,16 @@ export default function ExploreMap() {
           <div className="glass-panel h-full w-full rounded-3xl overflow-hidden shadow-2xl pointer-events-auto">
             <FacilityDetailCard
               facility={activeFacility}
-            masterSpesialis={masterSpesialis}
-            masterJenisFasilitas={masterJenisFasilitas}
-            onRoute={() => {
-              if (!userLocation) {
-                handleLocate();
-                return;
-              }
-              setRouting((r) => !r);
-            }}
+              masterSpesialis={masterSpesialis}
+              masterJenisFasilitas={masterJenisFasilitas}
+              kategori={kategori}
+              onRoute={() => {
+                if (!userLocation) {
+                  handleLocate();
+                  return;
+                }
+                setRouting((r) => !r);
+              }}
             routing={routing}
             canEdit={canEdit}
               onEdit={() => { setEditing(activeFacility); setModalOpen(true); }}

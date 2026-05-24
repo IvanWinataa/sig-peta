@@ -19,6 +19,7 @@ export default function FacilityDetailCard({
   facility,
   masterSpesialis = [],
   masterJenisFasilitas = [],
+  kategori = [],
   onRoute,
   onEdit,
   onDelete,
@@ -42,6 +43,36 @@ export default function FacilityDetailCard({
 
   const spesialisLines = formatSpesialisDisplay(facility.dokter_spesialis, masterSpesialis);
   const fasilitasLines = formatFasilitasDisplay(facility.fasilitas, masterJenisFasilitas);
+
+  // Parse atribut_khusus
+  let atributKhusus = {};
+  if (facility.atribut_khusus) {
+    try {
+      atributKhusus = typeof facility.atribut_khusus === 'string'
+        ? JSON.parse(facility.atribut_khusus)
+        : facility.atribut_khusus;
+    } catch (e) {
+      console.error('Failed to parse atribut_khusus', e);
+    }
+  }
+
+  // Resolve dynamic attribute labels from selected category's database-loaded schema
+  const selectedCategory = kategori.find((k) => k.nama_kategori === facility.nama_kategori);
+  let attributeLabels = {};
+  if (selectedCategory && selectedCategory.skema_atribut) {
+    try {
+      const skema = typeof selectedCategory.skema_atribut === 'string'
+        ? JSON.parse(selectedCategory.skema_atribut)
+        : selectedCategory.skema_atribut;
+      if (Array.isArray(skema)) {
+        skema.forEach((field) => {
+          attributeLabels[field.name] = field.label;
+        });
+      }
+    } catch (e) {
+      console.error('Failed to parse skema_atribut in detail card', e);
+    }
+  }
 
   return (
     <div className="card-slide-in flex flex-col h-full p-6">
@@ -103,6 +134,49 @@ export default function FacilityDetailCard({
           <p className="flex items-center gap-1">
             <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" /> {facility.rating}
           </p>
+        )}
+
+        {/* Dynamic DB-Driven Atribut Khusus Section */}
+        {Object.keys(atributKhusus).length > 0 && (
+          <div className="border-t border-slate-100 pt-4 mt-3">
+            <p className="text-xs font-bold text-teal-700 uppercase tracking-wider mb-2">Informasi Detail ({facility.nama_kategori})</p>
+            <div className="grid grid-cols-2 gap-x-4 gap-y-2 bg-slate-50/50 border border-slate-100 p-3.5 rounded-2xl text-xs">
+              {Object.entries(atributKhusus).map(([key, val]) => {
+                if (val === null || val === '') return null;
+                
+                // Fallback to stylized key name if not found in category schema labels
+                const label = attributeLabels[key] || key.replace(/_/g, ' ').toUpperCase();
+
+                // Format website field with links
+                if (key === 'website' && typeof val === 'string' && val.startsWith('http')) {
+                  return (
+                    <div key={key} className="col-span-2 flex flex-col gap-0.5 border-b border-slate-100/50 pb-1.5 last:border-0 last:pb-0">
+                      <span className="text-slate-400 font-medium uppercase tracking-tight text-[10px]">{label}</span>
+                      <a href={val} target="_blank" rel="noopener noreferrer" className="text-teal-600 font-semibold hover:underline truncate">
+                        {val.replace(/^https?:\/\/(www\.)?/, '')}
+                      </a>
+                    </div>
+                  );
+                }
+
+                // Format currency for consultation fees
+                let displayVal = val;
+                if (key === 'biaya_konsultasi' || key === 'biaya_terapi') {
+                  const num = Number(val);
+                  displayVal = isNaN(num) ? val : `Rp ${num.toLocaleString('id-ID')}`;
+                }
+
+                // Handle layout for long values
+                const isLongVal = typeof displayVal === 'string' && displayVal.length > 25;
+                return (
+                  <div key={key} className={`${isLongVal ? 'col-span-2' : 'col-span-1'} flex flex-col gap-0.5 border-b border-slate-100/50 pb-1.5 last:border-0 last:pb-0`}>
+                    <span className="text-slate-400 font-medium uppercase tracking-tight text-[10px]">{label}</span>
+                    <span className="text-slate-800 font-semibold">{displayVal}</span>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
         )}
 
         {spesialisLines.length > 0 && (

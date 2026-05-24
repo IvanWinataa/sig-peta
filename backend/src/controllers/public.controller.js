@@ -4,7 +4,7 @@ const { FASILITAS_SELECT, buildListQuery } = require('../utils/fasilitasQuery');
 async function getKategori(_req, res) {
   try {
     const result = await pool.query(
-      'SELECT id, nama_kategori, icon_marker, warna_marker FROM kategori ORDER BY id'
+      'SELECT id, nama_kategori, icon_marker, warna_marker, skema_atribut FROM kategori ORDER BY id'
     );
     return res.json({ success: true, data: result.rows });
   } catch (err) {

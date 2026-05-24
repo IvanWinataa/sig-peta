@@ -32,6 +32,26 @@ export default function FacilityModal({
   const [spesialisRows, setSpesialisRows] = useState([]);
   const [fasilitasRows, setFasilitasRows] = useState([]);
   const [foto, setFoto] = useState(null);
+  const [atributKhusus, setAtributKhusus] = useState({});
+
+  const selectedCategory = kategori.find((k) => String(k.id) === String(form.kategori_id));
+  const categoryName = selectedCategory ? selectedCategory.nama_kategori : '';
+
+  // Load custom fields dynamic schema from category object loaded from DB
+  let customFields = [];
+  if (selectedCategory && selectedCategory.skema_atribut) {
+    try {
+      customFields = typeof selectedCategory.skema_atribut === 'string'
+        ? JSON.parse(selectedCategory.skema_atribut)
+        : selectedCategory.skema_atribut;
+      if (!Array.isArray(customFields)) customFields = [];
+    } catch (e) {
+      console.error('Failed to parse skema_atribut', e);
+    }
+  }
+
+  const hasBpjsField = customFields.some((f) => f.name === 'bpjs');
+  const has24HoursField = customFields.some((f) => f.name === 'obat_24_jam');
 
   useEffect(() => {
     if (open) {
@@ -54,16 +74,52 @@ export default function FacilityModal({
         const fa = parseFasilitasList(initial.fasilitas);
         setSpesialisRows(sp.length ? sp : []);
         setFasilitasRows(fa.length ? fa : []);
+
+        let initialAtribut = {};
+        if (initial.atribut_khusus) {
+          try {
+            initialAtribut = typeof initial.atribut_khusus === 'string'
+              ? JSON.parse(initial.atribut_khusus)
+              : initial.atribut_khusus;
+          } catch (e) {
+            console.error('Failed to parse atribut_khusus', e);
+          }
+        }
+        setAtributKhusus(initialAtribut);
       } else {
         setForm(emptyForm);
         setSpesialisRows([]);
         setFasilitasRows([]);
+        setAtributKhusus({});
       }
       setFoto(null);
     }
   }, [open, initial]);
 
   const set = (key, val) => setForm((f) => ({ ...f, [key]: val }));
+
+  const setCustomValue = (key, val) => {
+    setAtributKhusus((prev) => {
+      const next = { ...prev, [key]: val };
+
+      // Sync BPJS field with DB column
+      if (key === 'bpjs') {
+        set('bpjs', val === 'Ya');
+      }
+      // Sync 24 Hours field with DB column
+      if (key === 'obat_24_jam') {
+        set('status_24_jam', val === 'Ya');
+      }
+      return next;
+    });
+  };
+
+  const handleKategoriChange = (newKategoriId) => {
+    set('kategori_id', newKategoriId);
+    setAtributKhusus({});
+    set('bpjs', false);
+    set('status_24_jam', false);
+  };
 
   const buildSpesialisJson = () =>
     JSON.stringify(
@@ -94,6 +150,7 @@ export default function FacilityModal({
     });
     fd.append('dokter_spesialis', buildSpesialisJson());
     fd.append('fasilitas', buildFasilitasJson());
+    fd.append('atribut_khusus', JSON.stringify(atributKhusus));
     if (foto) fd.append('foto', foto);
     onSubmit(fd);
   };
@@ -111,7 +168,7 @@ export default function FacilityModal({
           </div>
           <div>
             <label className="block text-xs font-medium text-gray-600 mb-1">Kategori *</label>
-            <select required className={inputCls} value={form.kategori_id} onChange={(e) => set('kategori_id', e.target.value)}>
+            <select required className={inputCls} value={form.kategori_id} onChange={(e) => handleKategoriChange(e.target.value)}>
               <option value="">Pilih kategori</option>
               {kategori.map((k) => (
                 <option key={k.id} value={k.id}>{k.nama_kategori}</option>
@@ -142,14 +199,62 @@ export default function FacilityModal({
             <label className="block text-xs font-medium text-gray-600 mb-1">Jam Operasional</label>
             <input className={inputCls} placeholder="08:00 - 20:00" value={form.jam_operasional} onChange={(e) => set('jam_operasional', e.target.value)} />
           </div>
-          <label className="flex items-center gap-2 text-sm">
-            <input type="checkbox" checked={form.bpjs} onChange={(e) => set('bpjs', e.target.checked)} className="rounded text-emerald-600" />
-            Tersedia BPJS
-          </label>
-          <label className="flex items-center gap-2 text-sm">
-            <input type="checkbox" checked={form.status_24_jam} onChange={(e) => set('status_24_jam', e.target.checked)} className="rounded text-emerald-600" />
-            Buka 24 Jam
-          </label>
+
+          <div className="flex gap-4 sm:col-span-2 py-1">
+            {!hasBpjsField && (
+              <label className="flex items-center gap-2 text-sm">
+                <input type="checkbox" checked={form.bpjs} onChange={(e) => set('bpjs', e.target.checked)} className="rounded text-emerald-600" />
+                Tersedia BPJS
+              </label>
+            )}
+            {!has24HoursField && (
+              <label className="flex items-center gap-2 text-sm">
+                <input type="checkbox" checked={form.status_24_jam} onChange={(e) => set('status_24_jam', e.target.checked)} className="rounded text-emerald-600" />
+                Buka 24 Jam
+              </label>
+            )}
+          </div>
+
+          {/* Dynamic Category Specific Fields (DB-Driven) */}
+          {customFields.length > 0 && (
+            <div className="sm:col-span-2 border-t border-emerald-100/60 pt-4 mt-2">
+              <h4 className="text-sm font-semibold text-slate-800 mb-3 flex items-center gap-1.5">
+                <span className="w-1.5 h-3 bg-emerald-500 rounded-full"></span>
+                Atribut Khusus Per Kategori ({categoryName})
+              </h4>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-emerald-50/20 border border-emerald-100/40 p-4 rounded-2xl">
+                {customFields.map((field) => (
+                  <div key={field.name}>
+                    <label className="block text-xs font-medium text-slate-600 mb-1">
+                      {field.label}
+                    </label>
+                    {field.type === 'select' ? (
+                      <select
+                        className={inputCls}
+                        value={atributKhusus[field.name] || ''}
+                        onChange={(e) => setCustomValue(field.name, e.target.value)}
+                      >
+                        <option value="">Pilih opsi</option>
+                        {Array.isArray(field.options) && field.options.map((opt) => (
+                          <option key={opt} value={opt}>
+                            {opt}
+                          </option>
+                        ))}
+                      </select>
+                    ) : (
+                      <input
+                        type={field.type}
+                        placeholder={field.placeholder || ''}
+                        className={inputCls}
+                        value={atributKhusus[field.name] || ''}
+                        onChange={(e) => setCustomValue(field.name, e.target.value)}
+                      />
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
 
           <div className="sm:col-span-2 border-t border-gray-100 pt-4">
             <MasterRowPicker

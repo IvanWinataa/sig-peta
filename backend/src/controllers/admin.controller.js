@@ -57,10 +57,10 @@ async function getKategori(_req, res) {
 
 async function createKategori(req, res) {
   try {
-    const { nama_kategori, icon_marker, warna_marker } = req.body;
+    const { nama_kategori, icon_marker, warna_marker, skema_atribut } = req.body;
     const result = await pool.query(
-      `INSERT INTO kategori (nama_kategori, icon_marker, warna_marker) VALUES ($1,$2,$3) RETURNING *`,
-      [nama_kategori, icon_marker, warna_marker]
+      `INSERT INTO kategori (nama_kategori, icon_marker, warna_marker, skema_atribut) VALUES ($1,$2,$3,$4) RETURNING *`,
+      [nama_kategori, icon_marker, warna_marker, JSON.stringify(skema_atribut || [])]
     );
     return res.status(201).json({ success: true, data: result.rows[0] });
   } catch (err) {
@@ -74,10 +74,10 @@ async function createKategori(req, res) {
 
 async function updateKategori(req, res) {
   try {
-    const { nama_kategori, icon_marker, warna_marker } = req.body;
+    const { nama_kategori, icon_marker, warna_marker, skema_atribut } = req.body;
     const result = await pool.query(
-      `UPDATE kategori SET nama_kategori=$1, icon_marker=$2, warna_marker=$3 WHERE id=$4 RETURNING *`,
-      [nama_kategori, icon_marker, warna_marker, req.params.id]
+      `UPDATE kategori SET nama_kategori=$1, icon_marker=$2, warna_marker=$3, skema_atribut=$4 WHERE id=$5 RETURNING *`,
+      [nama_kategori, icon_marker, warna_marker, JSON.stringify(skema_atribut || []), req.params.id]
     );
     if (result.rows.length === 0) {
       return res.status(404).json({ success: false, message: 'Kategori tidak ditemukan' });

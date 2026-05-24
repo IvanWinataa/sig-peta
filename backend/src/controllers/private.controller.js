@@ -27,6 +27,7 @@ function parseBody(body) {
     fasilitas: normalizeJsonField(body.fasilitas),
     deskripsi: body.deskripsi || null,
     rating: body.rating ? parseFloat(body.rating) : null,
+    atribut_khusus: normalizeJsonField(body.atribut_khusus),
   };
 }
 
@@ -39,13 +40,15 @@ async function createFasilitas(req, res) {
       `INSERT INTO fasilitas_kesehatan (
         nama_fasilitas, kategori_id, alamat, latitude, longitude,
         no_telepon, email, jam_operasional, status_24_jam, bpjs,
-        dokter_spesialis, fasilitas, deskripsi, rating, foto, created_by
-      ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16)
+        dokter_spesialis, fasilitas, deskripsi, rating, foto, created_by,
+        atribut_khusus
+      ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17)
       RETURNING id`,
       [
         data.nama_fasilitas, data.kategori_id, data.alamat, data.latitude, data.longitude,
         data.no_telepon, data.email, data.jam_operasional, data.status_24_jam, data.bpjs,
         data.dokter_spesialis, data.fasilitas, data.deskripsi, data.rating, foto, req.user.id,
+        data.atribut_khusus,
       ]
     );
 
@@ -71,11 +74,13 @@ async function updateFasilitas(req, res) {
       'latitude = $4', 'longitude = $5', 'no_telepon = $6', 'email = $7',
       'jam_operasional = $8', 'status_24_jam = $9', 'bpjs = $10',
       'dokter_spesialis = $11', 'fasilitas = $12', 'deskripsi = $13', 'rating = $14',
+      'atribut_khusus = $15',
     ];
     const values = [
       data.nama_fasilitas, data.kategori_id, data.alamat, data.latitude, data.longitude,
       data.no_telepon, data.email, data.jam_operasional, data.status_24_jam, data.bpjs,
       data.dokter_spesialis, data.fasilitas, data.deskripsi, data.rating,
+      data.atribut_khusus,
     ];
 
     if (foto !== undefined) {

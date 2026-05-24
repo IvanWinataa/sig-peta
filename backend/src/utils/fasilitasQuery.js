@@ -5,6 +5,7 @@ const FASILITAS_SELECT = `
     f.jam_operasional, f.status_24_jam, f.bpjs,
     f.dokter_spesialis, f.fasilitas, f.deskripsi,
     f.rating, f.foto, f.created_by, f.created_at,
+    f.atribut_khusus,
     k.nama_kategori, k.icon_marker, k.warna_marker,
     u.nama AS nama_pembuat
   FROM fasilitas_kesehatan f
