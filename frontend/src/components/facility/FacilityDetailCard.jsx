@@ -9,6 +9,7 @@ import {
   Trash2,
   Stethoscope,
   Building2,
+  X,
 } from 'lucide-react';
 import { CategoryIcon } from '../../utils/categoryIcons';
 import { formatSpesialisDisplay, formatFasilitasDisplay } from '../../utils/facilityJson';
@@ -25,6 +26,7 @@ export default function FacilityDetailCard({
   onDelete,
   canEdit = false,
   routing = false,
+  onClose,
 }) {
   if (!facility) {
     return (
@@ -56,9 +58,10 @@ export default function FacilityDetailCard({
     }
   }
 
-  // Resolve dynamic attribute labels from selected category's database-loaded schema
+  // Resolve dynamic attribute labels and types from selected category's database-loaded schema
   const selectedCategory = kategori.find((k) => k.nama_kategori === facility.nama_kategori);
   let attributeLabels = {};
+  let attributeTypes = {};
   if (selectedCategory && selectedCategory.skema_atribut) {
     try {
       const skema = typeof selectedCategory.skema_atribut === 'string'
@@ -67,6 +70,7 @@ export default function FacilityDetailCard({
       if (Array.isArray(skema)) {
         skema.forEach((field) => {
           attributeLabels[field.name] = field.label;
+          attributeTypes[field.name] = field.type;
         });
       }
     } catch (e) {
@@ -86,7 +90,19 @@ export default function FacilityDetailCard({
           <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
         </div>
       )}
-      <h3 className="text-xl font-bold text-gray-900">{facility.nama_fasilitas}</h3>
+      <div className="flex justify-between items-start gap-4">
+        <h3 className="text-xl font-bold text-gray-900 leading-tight flex-1">{facility.nama_fasilitas}</h3>
+        {onClose && (
+          <button
+            type="button"
+            onClick={onClose}
+            className="p-1.5 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-full transition-all shrink-0 pointer-events-auto cursor-pointer"
+            title="Tutup detail"
+          >
+            <X className="w-4 h-4" />
+          </button>
+        )}
+      </div>
       <p
         className="flex items-center gap-2 text-sm font-medium mt-1"
         style={{ color: facility.warna_marker }}
@@ -140,9 +156,9 @@ export default function FacilityDetailCard({
         {Object.keys(atributKhusus).length > 0 && (
           <div className="border-t border-slate-100 pt-4 mt-3">
             <p className="text-xs font-bold text-teal-700 uppercase tracking-wider mb-2">Informasi Detail ({facility.nama_kategori})</p>
-            <div className="grid grid-cols-2 gap-x-4 gap-y-2 bg-slate-50/50 border border-slate-100 p-3.5 rounded-2xl text-xs">
+            <div className="grid grid-cols-2 gap-x-4 gap-y-2.5 bg-slate-50/50 border border-slate-100 p-3.5 rounded-2xl text-xs">
               {Object.entries(atributKhusus).map(([key, val]) => {
-                if (val === null || val === '') return null;
+                if (val === null || val === '' || (Array.isArray(val) && val.length === 0)) return null;
                 
                 // Fallback to stylized key name if not found in category schema labels
                 const label = attributeLabels[key] || key.replace(/_/g, ' ').toUpperCase();
@@ -155,6 +171,38 @@ export default function FacilityDetailCard({
                       <a href={val} target="_blank" rel="noopener noreferrer" className="text-teal-600 font-semibold hover:underline truncate">
                         {val.replace(/^https?:\/\/(www\.)?/, '')}
                       </a>
+                    </div>
+                  );
+                }
+
+                // Handle spesialis_list
+                if (attributeTypes[key] === 'spesialis_list') {
+                  const lines = formatSpesialisDisplay(val, masterSpesialis);
+                  if (lines.length === 0) return null;
+                  return (
+                    <div key={key} className="col-span-2 flex flex-col gap-1 border-b border-slate-100/50 pb-2 last:border-0 last:pb-0">
+                      <span className="text-slate-400 font-medium uppercase tracking-tight text-[10px]">{label}</span>
+                      <ul className="list-disc pl-4 space-y-0.5 text-slate-800 font-semibold">
+                        {lines.map((line, idx) => (
+                          <li key={idx}>{line}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  );
+                }
+
+                // Handle fasilitas_list
+                if (attributeTypes[key] === 'fasilitas_list') {
+                  const lines = formatFasilitasDisplay(val, masterJenisFasilitas);
+                  if (lines.length === 0) return null;
+                  return (
+                    <div key={key} className="col-span-2 flex flex-col gap-1 border-b border-slate-100/50 pb-2 last:border-0 last:pb-0">
+                      <span className="text-slate-400 font-medium uppercase tracking-tight text-[10px]">{label}</span>
+                      <ul className="list-disc pl-4 space-y-0.5 text-slate-800 font-semibold">
+                        {lines.map((line, idx) => (
+                          <li key={idx}>{line}</li>
+                        ))}
+                      </ul>
                     </div>
                   );
                 }
@@ -176,32 +224,6 @@ export default function FacilityDetailCard({
                 );
               })}
             </div>
-          </div>
-        )}
-
-        {spesialisLines.length > 0 && (
-          <div>
-            <p className="flex items-center gap-1 font-semibold text-gray-800 mb-1">
-              <Stethoscope className="w-4 h-4" /> Dokter Spesialis
-            </p>
-            <ul className="list-disc list-inside space-y-0.5 text-gray-600">
-              {spesialisLines.map((line, i) => (
-                <li key={i}>{line}</li>
-              ))}
-            </ul>
-          </div>
-        )}
-
-        {fasilitasLines.length > 0 && (
-          <div>
-            <p className="flex items-center gap-1 font-semibold text-gray-800 mb-1">
-              <Building2 className="w-4 h-4" /> Fasilitas
-            </p>
-            <ul className="list-disc list-inside space-y-0.5 text-gray-600">
-              {fasilitasLines.map((line, i) => (
-                <li key={i}>{line}</li>
-              ))}
-            </ul>
           </div>
         )}
 

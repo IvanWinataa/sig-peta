@@ -59,8 +59,10 @@ export default function LeafletMap({
     clusterRef.current = cluster;
 
     const handleClick = (e) => {
-      if (editModeRef.current && onMapClickRef.current) {
-        onMapClickRef.current(e.latlng);
+      if (editModeRef.current) {
+        if (onMapClickRef.current) onMapClickRef.current(e.latlng);
+      } else {
+        if (onMarkerClickRef.current) onMarkerClickRef.current(null);
       }
     };
     map.on('click', handleClick);

@@ -150,7 +150,38 @@ export default function FacilityModal({
     });
     fd.append('dokter_spesialis', buildSpesialisJson());
     fd.append('fasilitas', buildFasilitasJson());
-    fd.append('atribut_khusus', JSON.stringify(atributKhusus));
+
+    // Clean up spesialis_list and fasilitas_list in atribut_khusus
+    const cleanedAtributKhusus = { ...atributKhusus };
+    customFields.forEach((field) => {
+      if (field.type === 'spesialis_list') {
+        const rows = cleanedAtributKhusus[field.name];
+        if (Array.isArray(rows)) {
+          cleanedAtributKhusus[field.name] = rows
+            .filter((r) => r.spesialis_id)
+            .map((r) => ({
+              spesialis_id: Number(r.spesialis_id),
+              nama_dokter: r.nama_dokter?.trim() || '',
+            }));
+        } else {
+          cleanedAtributKhusus[field.name] = [];
+        }
+      } else if (field.type === 'fasilitas_list') {
+        const rows = cleanedAtributKhusus[field.name];
+        if (Array.isArray(rows)) {
+          cleanedAtributKhusus[field.name] = rows
+            .filter((r) => r.jenis_id)
+            .map((r) => ({
+              jenis_id: Number(r.jenis_id),
+              keterangan: r.keterangan?.trim() || '',
+            }));
+        } else {
+          cleanedAtributKhusus[field.name] = [];
+        }
+      }
+    });
+
+    fd.append('atribut_khusus', JSON.stringify(cleanedAtributKhusus));
     if (foto) fd.append('foto', foto);
     onSubmit(fd);
   };
@@ -223,58 +254,55 @@ export default function FacilityModal({
                 Atribut Khusus Per Kategori ({categoryName})
               </h4>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-emerald-50/20 border border-emerald-100/40 p-4 rounded-2xl">
-                {customFields.map((field) => (
-                  <div key={field.name}>
-                    <label className="block text-xs font-medium text-slate-600 mb-1">
-                      {field.label}
-                    </label>
-                    {field.type === 'select' ? (
-                      <select
-                        className={inputCls}
-                        value={atributKhusus[field.name] || ''}
-                        onChange={(e) => setCustomValue(field.name, e.target.value)}
-                      >
-                        <option value="">Pilih opsi</option>
-                        {Array.isArray(field.options) && field.options.map((opt) => (
-                          <option key={opt} value={opt}>
-                            {opt}
-                          </option>
-                        ))}
-                      </select>
-                    ) : (
+                {customFields.map((field) => {
+                  if (field.type === 'spesialis_list') {
+                    return (
+                      <div key={field.name} className="sm:col-span-2 border-b border-emerald-100/40 pb-3 mb-2 last:border-0 last:pb-0 last:mb-0">
+                        <MasterRowPicker
+                          mode="spesialis"
+                          masterOptions={masterSpesialis}
+                          rows={Array.isArray(atributKhusus[field.name]) ? atributKhusus[field.name] : []}
+                          onChange={(val) => setCustomValue(field.name, val)}
+                          masterLabel="Pilih Spesialisasi"
+                          extraLabel="Nama Dokter"
+                          extraPlaceholder="Nama dokter (contoh: dr. Budi)"
+                        />
+                      </div>
+                    );
+                  }
+                  if (field.type === 'fasilitas_list') {
+                    return (
+                      <div key={field.name} className="sm:col-span-2 border-b border-emerald-100/40 pb-3 mb-2 last:border-0 last:pb-0 last:mb-0">
+                        <MasterRowPicker
+                          mode="fasilitas"
+                          masterOptions={masterJenisFasilitas}
+                          rows={Array.isArray(atributKhusus[field.name]) ? atributKhusus[field.name] : []}
+                          onChange={(val) => setCustomValue(field.name, val)}
+                          masterLabel="Pilih Jenis Fasilitas"
+                          extraLabel="Keterangan"
+                          extraPlaceholder="Keterangan (contoh: Lantai 2)"
+                        />
+                      </div>
+                    );
+                  }
+                  return (
+                    <div key={field.name}>
+                      <label className="block text-xs font-medium text-slate-600 mb-1">
+                        {field.label}
+                      </label>
                       <input
-                        type={field.type}
-                        placeholder={field.placeholder || ''}
+                        type={field.type === 'number' ? 'number' : 'text'}
+                        placeholder={field.placeholder || `Ketik ${field.label}...`}
                         className={inputCls}
                         value={atributKhusus[field.name] || ''}
                         onChange={(e) => setCustomValue(field.name, e.target.value)}
                       />
-                    )}
-                  </div>
-                ))}
+                    </div>
+                  );
+                })}
               </div>
             </div>
           )}
-
-          <div className="sm:col-span-2 border-t border-gray-100 pt-4">
-            <MasterRowPicker
-              mode="spesialis"
-              masterOptions={masterSpesialis}
-              rows={spesialisRows}
-              onChange={setSpesialisRows}
-              masterLabel="Pilih spesialis"
-            />
-          </div>
-
-          <div className="sm:col-span-2 border-t border-gray-100 pt-4">
-            <MasterRowPicker
-              mode="fasilitas"
-              masterOptions={masterJenisFasilitas}
-              rows={fasilitasRows}
-              onChange={setFasilitasRows}
-              masterLabel="Pilih jenis fasilitas"
-            />
-          </div>
 
           <div className="sm:col-span-2">
             <label className="block text-xs font-medium text-gray-600 mb-1">Deskripsi</label>

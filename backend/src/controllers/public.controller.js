@@ -1,4 +1,6 @@
+const jwt = require('jsonwebtoken');
 const pool = require('../config/db');
+const { secret } = require('../config/jwt');
 const { FASILITAS_SELECT, buildListQuery } = require('../utils/fasilitasQuery');
 
 async function getKategori(_req, res) {
@@ -17,9 +19,25 @@ async function getFasilitasList(req, res) {
   try {
     const page = parseInt(req.query.page, 10) || 1;
     const limit = parseInt(req.query.limit, 10) || 100;
+
+    let userId = null;
+    const authHeader = req.headers.authorization;
+    if (authHeader && authHeader.startsWith('Bearer ')) {
+      const token = authHeader.split(' ')[1];
+      try {
+        const decoded = jwt.verify(token, secret);
+        if (decoded && decoded.role !== 'admin') {
+          userId = decoded.id;
+        }
+      } catch (e) {
+        // Token invalid/expired; ignore and proceed as guest
+      }
+    }
+
     const { countQuery, dataQuery, params, countParams } = buildListQuery({
       kategori_id: req.query.kategori_id ? parseInt(req.query.kategori_id, 10) : null,
       search: req.query.search || null,
+      created_by: userId,
       page,
       limit,
       sort: req.query.sort || 'nama_fasilitas',
@@ -50,7 +68,28 @@ async function getFasilitasList(req, res) {
 
 async function getFasilitasById(req, res) {
   try {
-    const result = await pool.query(`${FASILITAS_SELECT} WHERE f.id = $1`, [req.params.id]);
+    let userId = null;
+    const authHeader = req.headers.authorization;
+    if (authHeader && authHeader.startsWith('Bearer ')) {
+      const token = authHeader.split(' ')[1];
+      try {
+        const decoded = jwt.verify(token, secret);
+        if (decoded && decoded.role !== 'admin') {
+          userId = decoded.id;
+        }
+      } catch (e) {
+        // Token invalid/expired; ignore and proceed as guest
+      }
+    }
+
+    let query = `${FASILITAS_SELECT} WHERE f.id = $1`;
+    const queryParams = [req.params.id];
+    if (userId) {
+      query += ` AND f.created_by = $2`;
+      queryParams.push(userId);
+    }
+
+    const result = await pool.query(query, queryParams);
     if (result.rows.length === 0) {
       return res.status(404).json({ success: false, message: 'Fasilitas tidak ditemukan' });
     }

@@ -226,7 +226,14 @@ GET /api/public/fasilitas
         "ambulance": "Tersedia",
         "jumlah_dokter": 50,
         "jumlah_bed": 200,
-        "spesialis": "Jantung, Anak",
+        "spesialis": [
+          { "spesialis_id": 1, "nama_dokter": "dr. Budi, Sp.PD" },
+          { "spesialis_id": 2, "nama_dokter": "dr. Ani, Sp.A" }
+        ],
+        "fasilitas": [
+          { "jenis_id": 1, "keterangan": "2 Unit" },
+          { "jenis_id": 2, "keterangan": "24 Jam" }
+        ],
         "apotek_internal": "Ada",
         "laboratorium": "Ada",
         "ruang_operasi": "Ada",

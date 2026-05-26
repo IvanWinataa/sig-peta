@@ -215,21 +215,10 @@ function AdminKategoriContent() {
                         >
                           <option value="text">Teks (text)</option>
                           <option value="number">Angka (number)</option>
-                          <option value="select">Pilihan (select)</option>
+                          <option value="spesialis_list">Dokter Spesialis (List)</option>
+                          <option value="fasilitas_list">Fasilitas Tersedia (List)</option>
                         </select>
                       </div>
-                      {attr.type === 'select' && (
-                        <div className="sm:col-span-3">
-                          <label className="block text-[10px] font-medium text-slate-500 mb-0.5">Pilihan Opsi (pisahkan dengan koma)*</label>
-                          <input
-                            required
-                            placeholder="contoh: Tradisional, Refleksi, Swedia"
-                            className="w-full border rounded px-2.5 py-1.5 text-xs outline-none bg-white focus:border-emerald-500"
-                            value={Array.isArray(attr.options) ? attr.options.join(', ') : attr.options || ''}
-                            onChange={(e) => handleUpdateAtribut(idx, 'options', e.target.value.split(',').map(s => s.trim()).filter(Boolean))}
-                          />
-                        </div>
-                      )}
                     </div>
                   </div>
                 ))

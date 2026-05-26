@@ -285,14 +285,14 @@ SELECT created_by FROM fasilitas_kesehatan WHERE id = $1;
 
 ```
 backend/migrations/
-  001_create_users.sql
+  001_init.sql
   002_master_tables.sql
-  003_create_kategori.sql
-  004_create_fasilitas_kesehatan.sql
-backend/seeds/
-  001_seed_kategori.sql
-  002_seed_admin.sql
-  003_seed_master.sql
+  003_add_atribut_khusus.sql
+  004_add_skema_atribut.sql
+  005_update_rs_skema_list.sql
+backend/scripts/
+  migrate.js
+  seed.js
 ```
 
 ---

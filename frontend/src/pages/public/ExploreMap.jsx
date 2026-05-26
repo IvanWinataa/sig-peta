@@ -137,7 +137,7 @@ export default function ExploreMap() {
           <LeafletMap
             facilities={filtered}
             activeId={activeId}
-            onMarkerClick={(f) => setActiveId(f.id)}
+            onMarkerClick={(f) => setActiveId(f ? f.id : null)}
             onMapClick={handleMapClick}
             editMode={editMode && !!user}
             userLocation={userLocation}
@@ -179,27 +179,30 @@ export default function ExploreMap() {
         <div className="flex-1 pointer-events-none z-10"></div>
 
         {/* Panel kanan — detail card (Floating) */}
-        <aside className="w-[340px] shrink-0 z-10 m-4 hidden lg:flex flex-col pointer-events-none">
-          <div className="glass-panel h-full w-full rounded-3xl overflow-hidden shadow-2xl pointer-events-auto">
-            <FacilityDetailCard
-              facility={activeFacility}
-              masterSpesialis={masterSpesialis}
-              masterJenisFasilitas={masterJenisFasilitas}
-              kategori={kategori}
-              onRoute={() => {
-                if (!userLocation) {
-                  handleLocate();
-                  return;
-                }
-                setRouting((r) => !r);
-              }}
-            routing={routing}
-            canEdit={canEdit}
-              onEdit={() => { setEditing(activeFacility); setModalOpen(true); }}
-              onDelete={handleDelete}
-            />
-          </div>
-        </aside>
+        {activeFacility && (
+          <aside className="w-[340px] shrink-0 z-10 m-4 hidden lg:flex flex-col pointer-events-none">
+            <div className="glass-panel h-full w-full rounded-3xl overflow-hidden shadow-2xl pointer-events-auto">
+              <FacilityDetailCard
+                facility={activeFacility}
+                masterSpesialis={masterSpesialis}
+                masterJenisFasilitas={masterJenisFasilitas}
+                kategori={kategori}
+                onRoute={() => {
+                  if (!userLocation) {
+                    handleLocate();
+                    return;
+                  }
+                  setRouting((r) => !r);
+                }}
+                routing={routing}
+                canEdit={canEdit}
+                onEdit={() => { setEditing(activeFacility); setModalOpen(true); }}
+                onDelete={handleDelete}
+                onClose={() => setActiveId(null)}
+              />
+            </div>
+          </aside>
+        )}
       </div>
 
       <FacilityModal

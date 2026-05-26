@@ -236,8 +236,8 @@ Muncul saat fasilitas dipilih. **Bukan sidebar form.**
 | jam_operasional | text | — |
 | status_24_jam | checkbox | — |
 | bpjs | checkbox | — |
-| dokter_spesialis | dynamic row (dropdown jenis spesialis + input nama dokter) | — |
-| fasilitas | dynamic row (dropdown jenis fasilitas + input keterangan) | — |
+| dokter_spesialis | dynamic row (dalam atribut_khusus, tipe spesialis_list jika kategori mendukung) | — |
+| fasilitas | dynamic row (dalam atribut_khusus, tipe fasilitas_list jika kategori mendukung) | — |
 | deskripsi | textarea | — |
 | rating | number step 0.1 | — |
 | foto | file input | — |
