@@ -21,16 +21,18 @@ async function getFasilitasList(req, res) {
     const limit = parseInt(req.query.limit, 10) || 100;
 
     let userId = null;
-    const authHeader = req.headers.authorization;
-    if (authHeader && authHeader.startsWith('Bearer ')) {
-      const token = authHeader.split(' ')[1];
-      try {
-        const decoded = jwt.verify(token, secret);
-        if (decoded && decoded.role !== 'admin') {
-          userId = decoded.id;
+    if (req.query.filter_user === 'true') {
+      const authHeader = req.headers.authorization;
+      if (authHeader && authHeader.startsWith('Bearer ')) {
+        const token = authHeader.split(' ')[1];
+        try {
+          const decoded = jwt.verify(token, secret);
+          if (decoded && decoded.role !== 'admin') {
+            userId = decoded.id;
+          }
+        } catch (e) {
+          // Token invalid/expired; ignore and proceed as guest
         }
-      } catch (e) {
-        // Token invalid/expired; ignore and proceed as guest
       }
     }
 
@@ -69,16 +71,18 @@ async function getFasilitasList(req, res) {
 async function getFasilitasById(req, res) {
   try {
     let userId = null;
-    const authHeader = req.headers.authorization;
-    if (authHeader && authHeader.startsWith('Bearer ')) {
-      const token = authHeader.split(' ')[1];
-      try {
-        const decoded = jwt.verify(token, secret);
-        if (decoded && decoded.role !== 'admin') {
-          userId = decoded.id;
+    if (req.query.filter_user === 'true') {
+      const authHeader = req.headers.authorization;
+      if (authHeader && authHeader.startsWith('Bearer ')) {
+        const token = authHeader.split(' ')[1];
+        try {
+          const decoded = jwt.verify(token, secret);
+          if (decoded && decoded.role !== 'admin') {
+            userId = decoded.id;
+          }
+        } catch (e) {
+          // Token invalid/expired; ignore and proceed as guest
         }
-      } catch (e) {
-        // Token invalid/expired; ignore and proceed as guest
       }
     }
 

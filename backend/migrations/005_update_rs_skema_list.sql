@@ -7,8 +7,6 @@ UPDATE kategori SET skema_atribut = '[
   {"name": "ambulance", "label": "Ambulans", "type": "text"},
   {"name": "jumlah_dokter", "label": "Jumlah Dokter", "type": "number"},
   {"name": "jumlah_bed", "label": "Jumlah Tempat Tidur (Bed)", "type": "number"},
-  {"name": "spesialis", "label": "Spesialisasi Utama (Dokter)", "type": "spesialis_list"},
-  {"name": "fasilitas", "label": "Fasilitas Tersedia (List)", "type": "fasilitas_list"},
   {"name": "apotek_internal", "label": "Apotek Internal", "type": "text"},
   {"name": "laboratorium", "label": "Laboratorium", "type": "text"},
   {"name": "ruang_operasi", "label": "Ruang Operasi", "type": "text"},

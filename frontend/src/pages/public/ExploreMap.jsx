@@ -35,7 +35,7 @@ export default function ExploreMap() {
         getKategori(),
         getSpesialis(),
         getJenisFasilitas(),
-        getFasilitas({ limit: 500 }),
+        getFasilitas({ limit: 500, filter_user: 'true' }),
       ]);
       setKategori(katRes.data.data);
       setMasterSpesialis(spRes.data.data);
