@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Map, Navigation, Table, Hospital, Stethoscope, Pill, ArrowRight } from 'lucide-react';
+import { Map, Navigation, Table, Hospital, Stethoscope, Pill, ArrowRight, HeartPulse, FlaskConical, UserRound } from 'lucide-react';
 import Topbar from '../../components/layout/Topbar';
 
 export default function Home() {
@@ -65,6 +65,9 @@ export default function Home() {
               { Icon: Hospital, label: 'Rumah Sakit', color: '#EF4444', bg: '#FEF2F2' },
               { Icon: Stethoscope, label: 'Klinik', color: '#0EA5E9', bg: '#F0F9FF' },
               { Icon: Pill, label: 'Apotek', color: '#10B981', bg: '#ECFDF5' },
+              { Icon: HeartPulse, label: 'Puskesmas', color: '#0EA5E9', bg: '#F0F9FF' },
+              { Icon: FlaskConical, label: 'Laboratorium', color: '#10B981', bg: '#ECFDF5' },
+              { Icon: UserRound, label: 'Dokter Praktik', color: '#10B981', bg: '#ECFDF5' },
             ].map(({ Icon, label, color, bg }) => (
               <span
                 key={label}

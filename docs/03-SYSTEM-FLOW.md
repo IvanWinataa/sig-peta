@@ -259,7 +259,7 @@ Admin → /admin/markers
 
 | Halaman / Konteks | Method | Endpoint | Filter data |
 |-------------------|--------|----------|-------------|
-| Explore Map | GET | `/public/fasilitas` | Semua |
+| Explore Map | GET | `/public/fasilitas?filter_user=true` | Milik sendiri (jika login user biasa), Semua (jika guest/admin) |
 | Data Tabel | GET | `/public/fasilitas` | Semua (+ pagination) |
 | Dashboard User | GET | `/private/my-fasilitas` | `created_by = userId` |
 | Marker Saya | GET | `/private/my-fasilitas` | `created_by = userId` |

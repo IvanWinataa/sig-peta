@@ -123,7 +123,7 @@ Setiap record di tabel `fasilitas_kesehatan` memiliki atribut berikut:
 | Tambah marker (Edit Mode) | ✅ |
 | Edit marker **milik sendiri** | ✅ |
 | Hapus marker **milik sendiri** | ✅ |
-| Lihat marker di Explore Map | ✅ **semua** (sama public) |
+| Lihat marker di Explore Map | ✅ **milik sendiri saja** (jika login sebagai user biasa) / **semua** (untuk guest/admin) |
 | Lihat / kelola di Dashboard & Marker Saya | ✅ **milik sendiri saja** |
 | Edit/hapus marker user lain | ❌ |
 | Kelola user / kategori master | ❌ |
@@ -143,7 +143,7 @@ Setiap record di tabel `fasilitas_kesehatan` memiliki atribut berikut:
 
 | Fitur | Public | User | Admin |
 |-------|--------|------|-------|
-| Explore Map (lihat semua) | ✅ | ✅ | ✅ |
+| Explore Map | ✅ (all) | ✅ (own) | ✅ (all) |
 | Data Tabel (lihat semua) | ✅ | ✅ | ✅ |
 | Tambah marker | ❌ | ✅ | ✅ |
 | Edit marker sendiri | ❌ | ✅ | ✅ |
@@ -157,13 +157,15 @@ Setiap record di tabel `fasilitas_kesehatan` memiliki atribut berikut:
 ### 5.3 Aturan Visibilitas (KRITIS)
 
 ```
-PUBLIC API  → GET /api/public/fasilitas     → SEMUA record
-PRIVATE API → GET /api/private/my-fasilitas → WHERE created_by = userId
-ADMIN API   → GET /api/admin/all-fasilitas  → SEMUA record
+PUBLIC API  → GET /api/public/fasilitas?filter_user=true → Milik sendiri jika login user biasa, semua jika guest/admin
+PUBLIC API  → GET /api/public/fasilitas                  → SEMUA record (untuk halaman tabular)
+PRIVATE API → GET /api/private/my-fasilitas             → WHERE created_by = userId
+ADMIN API   → GET /api/admin/all-fasilitas              → SEMUA record
 ```
 
-User login di **Explore Map** tetap melihat semua fasilitas (kebutuhan pencarian masyarakat).  
-Aturan "hanya marker milik sendiri" berlaku di **Dashboard, Marker Saya, dan Edit Mode** (kelola data).
+User login (user biasa) di **Explore Map** disaring agar hanya melihat fasilitas yang dibuatnya sendiri (dengan query `filter_user=true`). Pengunjung biasa (Guest) dan Admin tetap melihat semua fasilitas.  
+Halaman tabular **Data Fasilitas** tidak menerapkan filter user biasa (tetap melihat semua fasilitas).  
+Aturan "hanya marker milik sendiri" untuk manajemen data berlaku di **Dashboard, Marker Saya, dan Edit Mode** (kelola data).
 
 ---
 

@@ -4,7 +4,7 @@ const FASILITAS_SELECT = `
     f.latitude, f.longitude, f.no_telepon, f.email,
     f.jam_operasional, f.status_24_jam, f.bpjs,
     f.dokter_spesialis, f.fasilitas, f.deskripsi,
-    f.rating, f.foto, f.created_by, f.created_at,
+    f.foto, f.created_by, f.created_at,
     f.atribut_khusus,
     k.nama_kategori, k.icon_marker, k.warna_marker,
     u.nama AS nama_pembuat
@@ -18,7 +18,6 @@ const SORTABLE = {
   kategori: 'k.nama_kategori',
   alamat: 'f.alamat',
   created_at: 'f.created_at',
-  rating: 'f.rating',
 };
 
 function buildListQuery({ kategori_id, search, created_by, page = 1, limit = 100, sort = 'nama_fasilitas', order = 'asc' }) {

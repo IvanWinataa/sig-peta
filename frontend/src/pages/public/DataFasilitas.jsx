@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Search, ChevronLeft, ChevronRight, ChevronDown, Clock, Mail, Star, Globe, Shield, MapPin } from 'lucide-react';
+import { Search, ChevronLeft, ChevronRight, ChevronDown, Clock, Mail, Globe, Shield, MapPin } from 'lucide-react';
 import Topbar from '../../components/layout/Topbar';
 import { getKategori, getFasilitas, getSpesialis, getJenisFasilitas } from '../../services/publicService';
 import { CategoryIcon } from '../../utils/categoryIcons';
@@ -206,12 +206,6 @@ export default function DataFasilitas() {
                                     <p className="flex gap-2.5 items-center text-xs">
                                       <Mail className="w-4 h-4 text-slate-400 shrink-0" />
                                       <span className="font-semibold text-slate-700 min-w-[80px]">Email:</span> {row.email}
-                                    </p>
-                                  )}
-                                  {row.rating != null && (
-                                    <p className="flex gap-2.5 items-center text-xs">
-                                      <Star className="w-4 h-4 text-yellow-500 fill-yellow-500 shrink-0" />
-                                      <span className="font-semibold text-slate-700 min-w-[80px]">Rating:</span> {row.rating} / 5.0
                                     </p>
                                   )}
                                   <p className="flex gap-2.5 items-center text-xs">

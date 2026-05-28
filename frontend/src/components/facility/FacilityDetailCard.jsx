@@ -3,7 +3,6 @@ import {
   Phone,
   Mail,
   Clock,
-  Star,
   Navigation,
   Pencil,
   Trash2,
@@ -146,12 +145,6 @@ export default function FacilityDetailCard({
             </span>
           )}
         </div>
-        {facility.rating != null && (
-          <p className="flex items-center gap-1">
-            <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" /> {facility.rating}
-          </p>
-        )}
-
         {/* Dynamic DB-Driven Atribut Khusus Section */}
         {Object.keys(atributKhusus).length > 0 && (
           <div className="border-t border-slate-100 pt-4 mt-3">

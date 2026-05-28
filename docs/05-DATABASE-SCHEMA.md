@@ -290,6 +290,7 @@ backend/migrations/
   003_add_atribut_khusus.sql
   004_add_skema_atribut.sql
   005_update_rs_skema_list.sql
+  006_add_rs_spesialis.sql
 backend/scripts/
   migrate.js
   seed.js

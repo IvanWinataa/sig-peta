@@ -186,6 +186,7 @@ GET /api/public/fasilitas
 |-------|------|---------|------------|
 | `kategori_id` | integer | — | Filter satu kategori |
 | `search` | string | — | Cari nama, alamat, nama kategori |
+| `filter_user` | string/boolean | — | Jika `true` dan pengguna login (non-admin), hanya mengembalikan data buatan pengguna tersebut |
 | `page` | integer | 1 | Halaman (untuk tabel) |
 | `limit` | integer | 100 | Jumlah per halaman |
 | `sort` | string | `nama_fasilitas` | Kolom sort |

@@ -36,7 +36,7 @@ export default function Topbar({ editMode, onToggleEditMode, onLocateMe }) {
                 <div className="h-px bg-slate-100 my-1 mx-3"></div>
                 <NavLink to="/admin/kategori" className={dropdownLinkClass}>Kategori</NavLink>
                 <NavLink to="/admin/spesialis" className={dropdownLinkClass}>Spesialis</NavLink>
-                <NavLink to="/admin/jenis-fasilitas" className={dropdownLinkClass}>Jenis Fasilitas</NavLink>
+                {/*<NavLink to="/admin/jenis-fasilitas" className={dropdownLinkClass}>Jenis Fasilitas</NavLink>*/}
                 <NavLink to="/admin/markers" className={dropdownLinkClass}>Semua Marker</NavLink>
               </>
             )}

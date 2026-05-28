@@ -15,7 +15,6 @@ const emptyForm = {
   status_24_jam: false,
   bpjs: false,
   deskripsi: '',
-  rating: '',
 };
 
 export default function FacilityModal({
@@ -68,7 +67,6 @@ export default function FacilityModal({
           status_24_jam: !!initial.status_24_jam,
           bpjs: !!initial.bpjs,
           deskripsi: initial.deskripsi || '',
-          rating: initial.rating != null ? String(initial.rating) : '',
         });
         const sp = parseSpesialisList(initial.dokter_spesialis);
         const fa = parseFasilitasList(initial.fasilitas);
@@ -307,10 +305,6 @@ export default function FacilityModal({
           <div className="sm:col-span-2">
             <label className="block text-xs font-medium text-gray-600 mb-1">Deskripsi</label>
             <textarea rows={2} className={inputCls} value={form.deskripsi} onChange={(e) => set('deskripsi', e.target.value)} />
-          </div>
-          <div>
-            <label className="block text-xs font-medium text-gray-600 mb-1">Rating (0-5)</label>
-            <input type="number" min="0" max="5" step="0.1" className={inputCls} value={form.rating} onChange={(e) => set('rating', e.target.value)} />
           </div>
           <div>
             <label className="block text-xs font-medium text-gray-600 mb-1">Upload Foto</label>
