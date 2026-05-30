@@ -1,8 +1,9 @@
 const jwt = require('jsonwebtoken');
 const pool = require('../config/db');
 const { secret } = require('../config/jwt');
-const { FASILITAS_SELECT, buildListQuery } = require('../utils/fasilitasQuery');
+const { buildListQuery } = require('../utils/fasilitasQuery');
 
+// Mengambil semua kategori beserta skema atribut dari database untuk form dinamis dan filter
 async function getKategori(_req, res) {
   try {
     const result = await pool.query(
@@ -15,6 +16,7 @@ async function getKategori(_req, res) {
   }
 }
 
+// Mengambil daftar fasilitas kesehatan berdasarkan parameter filter, pencarian, pengurutan, dan paginasi
 async function getFasilitasList(req, res) {
   try {
     const page = parseInt(req.query.page, 10) || 1;
@@ -68,40 +70,4 @@ async function getFasilitasList(req, res) {
   }
 }
 
-async function getFasilitasById(req, res) {
-  try {
-    let userId = null;
-    if (req.query.filter_user === 'true') {
-      const authHeader = req.headers.authorization;
-      if (authHeader && authHeader.startsWith('Bearer ')) {
-        const token = authHeader.split(' ')[1];
-        try {
-          const decoded = jwt.verify(token, secret);
-          if (decoded && decoded.role !== 'admin') {
-            userId = decoded.id;
-          }
-        } catch (e) {
-          // Token invalid/expired; ignore and proceed as guest
-        }
-      }
-    }
-
-    let query = `${FASILITAS_SELECT} WHERE f.id = $1`;
-    const queryParams = [req.params.id];
-    if (userId) {
-      query += ` AND f.created_by = $2`;
-      queryParams.push(userId);
-    }
-
-    const result = await pool.query(query, queryParams);
-    if (result.rows.length === 0) {
-      return res.status(404).json({ success: false, message: 'Fasilitas tidak ditemukan' });
-    }
-    return res.json({ success: true, data: result.rows[0] });
-  } catch (err) {
-    console.error(err);
-    return res.status(500).json({ success: false, message: 'Terjadi kesalahan server' });
-  }
-}
-
-module.exports = { getKategori, getFasilitasList, getFasilitasById };
+module.exports = { getKategori, getFasilitasList };

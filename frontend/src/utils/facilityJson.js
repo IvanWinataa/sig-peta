@@ -1,5 +1,6 @@
 /** Parse dokter_spesialis / fasilitas dari DB (JSON string atau legacy teks) */
 
+// Mengurai data dokter spesialis dari format database (JSON string atau teks terpisah koma) menjadi array objek terstruktur
 export function parseSpesialisList(raw) {
   if (!raw) return [];
   try {
@@ -21,6 +22,7 @@ export function parseSpesialisList(raw) {
   return [];
 }
 
+// Mengurai data fasilitas dari format database (JSON string atau teks terpisah koma) menjadi array objek terstruktur
 export function parseFasilitasList(raw) {
   if (!raw) return [];
   try {
@@ -41,6 +43,7 @@ export function parseFasilitasList(raw) {
   return [];
 }
 
+// Memformat data dokter spesialis mentah menjadi list teks tampilan yang rapi (menggabungkan nama spesialis dari master dengan nama dokter)
 export function formatSpesialisDisplay(raw, masterList = []) {
   const items = parseSpesialisList(raw);
   return items.map((item) => {
@@ -50,6 +53,7 @@ export function formatSpesialisDisplay(raw, masterList = []) {
   });
 }
 
+// Memformat data fasilitas mentah menjadi list teks tampilan yang rapi (menggabungkan jenis fasilitas dari master dengan keterangan tambahan)
 export function formatFasilitasDisplay(raw, masterList = []) {
   const items = parseFasilitasList(raw);
   return items.map((item) => {

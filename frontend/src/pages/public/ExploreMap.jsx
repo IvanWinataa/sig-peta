@@ -10,6 +10,7 @@ import { getKategori, getFasilitas, getSpesialis, getJenisFasilitas } from '../.
 import { createFasilitas, updateFasilitas, deleteFasilitas } from '../../services/privateService';
 import { useAuth } from '../../context/AuthContext';
 
+// Halaman utama WebGIS: menampilkan peta interaktif, sidebar pencarian/filter fasilitas, dan detail info/rute
 export default function ExploreMap() {
   const { user } = useAuth();
   const [kategori, setKategori] = useState([]);
@@ -28,6 +29,7 @@ export default function ExploreMap() {
   const [editing, setEditing] = useState(null);
   const [saving, setSaving] = useState(false);
 
+  // Fungsi memuat data kategori, spesialis, jenis fasilitas, dan daftar seluruh fasilitas kesehatan dari API
   const loadData = useCallback(async () => {
     setLoading(true);
     try {
@@ -69,6 +71,7 @@ export default function ExploreMap() {
 
   const activeFacility = filtered.find((f) => f.id === activeId) || facilities.find((f) => f.id === activeId);
 
+  // Fungsi untuk mendapatkan koordinat geolocation pengguna saat ini menggunakan API Geolocation browser
   const handleLocate = () => {
     if (!navigator.geolocation) {
       alert('Browser tidak mendukung geolocation');
@@ -80,6 +83,7 @@ export default function ExploreMap() {
     );
   };
 
+  // Menangani klik pada peta dalam mode edit untuk mempersiapkan form tambah marker di koordinat terpilih
   const handleMapClick = (latlng) => {
     if (!user) {
       alert('Login terlebih dahulu untuk menambah marker');
@@ -92,6 +96,7 @@ export default function ExploreMap() {
     setModalOpen(true);
   };
 
+  // Fungsi untuk menyimpan marker baru atau memperbarui data marker yang ada melalui API backend
   const handleSave = async (formData) => {
     setSaving(true);
     try {
@@ -110,6 +115,7 @@ export default function ExploreMap() {
     }
   };
 
+  // Fungsi untuk menghapus marker fasilitas kesehatan saat ini setelah mendapatkan konfirmasi pengguna
   const handleDelete = async () => {
     if (!activeFacility || !window.confirm('Hapus fasilitas ini?')) return;
     try {

@@ -7,6 +7,7 @@ import { getMyFasilitas, updateFasilitas, deleteFasilitas } from '../../services
 import { getKategori, getSpesialis, getJenisFasilitas } from '../../services/publicService';
 import { CategoryIcon } from '../../utils/categoryIcons';
 
+// Komponen internal untuk mengelola marker fasilitas kesehatan yang dibuat oleh user sendiri (menampilkan, mengubah, dan menghapus)
 function MyMarkerContent() {
   const [data, setData] = useState([]);
   const [kategori, setKategori] = useState([]);
@@ -16,6 +17,7 @@ function MyMarkerContent() {
   const [modalOpen, setModalOpen] = useState(false);
   const [saving, setSaving] = useState(false);
 
+  // Memuat data fasilitas kesehatan milik user saat ini
   const load = () => getMyFasilitas({ limit: 200 }).then((r) => setData(r.data.data));
 
   useEffect(() => {
@@ -27,6 +29,7 @@ function MyMarkerContent() {
     });
   }, []);
 
+  // Menangani submit form untuk memperbarui data marker yang telah diubah ke API backend
   const handleSave = async (fd) => {
     setSaving(true);
     try {
@@ -41,6 +44,7 @@ function MyMarkerContent() {
     }
   };
 
+  // Menangani aksi hapus marker milik user saat ini melalui API backend
   const handleDelete = async (id) => {
     if (!window.confirm('Hapus marker ini?')) return;
     try {
@@ -112,6 +116,7 @@ function MyMarkerContent() {
   );
 }
 
+// Komponen Halaman Marker Saya yang terproteksi oleh login dan menampilkan tabel data marker milik user
 export default function MyMarker() {
   return <ProtectedRoute><MyMarkerContent /></ProtectedRoute>;
 }

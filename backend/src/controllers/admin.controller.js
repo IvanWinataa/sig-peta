@@ -1,6 +1,7 @@
 const pool = require('../config/db');
-const { FASILITAS_SELECT, buildListQuery } = require('../utils/fasilitasQuery');
+const { buildListQuery } = require('../utils/fasilitasQuery');
 
+// Mengambil semua daftar fasilitas kesehatan dari database untuk dikelola oleh admin
 async function getAllFasilitas(req, res) {
   try {
     const page = parseInt(req.query.page, 10) || 1;
@@ -29,6 +30,7 @@ async function getAllFasilitas(req, res) {
   }
 }
 
+// Menghapus fasilitas kesehatan apa saja oleh admin berdasarkan ID tanpa validasi kepemilikan
 async function deleteFasilitasAdmin(req, res) {
   try {
     const result = await pool.query(
@@ -45,6 +47,7 @@ async function deleteFasilitasAdmin(req, res) {
   }
 }
 
+// Mengambil daftar semua kategori (untuk dikelola oleh admin)
 async function getKategori(_req, res) {
   try {
     const result = await pool.query('SELECT * FROM kategori ORDER BY id');
@@ -55,6 +58,7 @@ async function getKategori(_req, res) {
   }
 }
 
+// Membuat kategori baru beserta ikon, warna marker, dan skema atributnya
 async function createKategori(req, res) {
   try {
     const { nama_kategori, icon_marker, warna_marker, skema_atribut } = req.body;
@@ -72,6 +76,7 @@ async function createKategori(req, res) {
   }
 }
 
+// Mengubah kategori, ikon, warna marker, atau skema atribut yang sudah ada berdasarkan ID
 async function updateKategori(req, res) {
   try {
     const { nama_kategori, icon_marker, warna_marker, skema_atribut } = req.body;
@@ -89,6 +94,7 @@ async function updateKategori(req, res) {
   }
 }
 
+// Menghapus kategori tertentu berdasarkan ID jika kategori tersebut tidak sedang digunakan oleh fasilitas mana pun
 async function deleteKategori(req, res) {
   try {
     const used = await pool.query(
@@ -109,6 +115,7 @@ async function deleteKategori(req, res) {
   }
 }
 
+// Mengambil semua user yang terdaftar dalam sistem (tanpa mengembalikan data password)
 async function getUsers(_req, res) {
   try {
     const result = await pool.query(
@@ -121,6 +128,7 @@ async function getUsers(_req, res) {
   }
 }
 
+// Mengubah nama atau role dari user tertentu berdasarkan ID
 async function updateUser(req, res) {
   try {
     const { nama, role } = req.body;
@@ -138,6 +146,7 @@ async function updateUser(req, res) {
   }
 }
 
+// Menghapus akun user tertentu berdasarkan ID (dan memvalidasi agar tidak dapat menghapus akun sendiri)
 async function deleteUser(req, res) {
   try {
     if (parseInt(req.params.id, 10) === req.user.id) {

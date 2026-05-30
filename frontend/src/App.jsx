@@ -13,6 +13,7 @@ import AdminMarkers from './pages/admin/AdminMarkers';
 import AdminSpesialis from './pages/admin/AdminSpesialis';
 import AdminJenisFasilitas from './pages/admin/AdminJenisFasilitas';
 
+// Komponen utama aplikasi React yang membungkus seluruh routing halaman serta AuthProvider context
 export default function App() {
   return (
     <AuthProvider>

@@ -3,6 +3,7 @@ import { getMe, login as loginApi } from '../services/authService';
 
 const AuthContext = createContext(null);
 
+// Provider React Context untuk memantau status login user, memuat sesi saat startup, dan membungkus seluruh aplikasi
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(() => {
     const saved = localStorage.getItem('healthmap_user');
@@ -29,6 +30,7 @@ export function AuthProvider({ children }) {
       .finally(() => setLoading(false));
   }, []);
 
+  // Fungsi login untuk memanggil API login, menyimpan token & profil user ke localStorage, serta memperbarui state
   const login = async (email, password) => {
     const res = await loginApi({ email, password });
     const { token, user: u } = res.data.data;
@@ -38,6 +40,7 @@ export function AuthProvider({ children }) {
     return u;
   };
 
+  // Fungsi logout untuk menghapus token & data user dari localStorage serta membersihkan state sesi aktif
   const logout = () => {
     localStorage.removeItem('healthmap_token');
     localStorage.removeItem('healthmap_user');
@@ -45,11 +48,12 @@ export function AuthProvider({ children }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, logout, setUser, isAdmin: user?.role === 'admin' }}>
+    <AuthContext.Provider value={{ user, loading, login, logout, isAdmin: user?.role === 'admin' }}>
       {children}
     </AuthContext.Provider>
   );
 }
 
+// Hook kustom React untuk mempermudah akses ke data autentikasi dan status sesi dari komponen mana pun
 export const useAuth = () => useContext(AuthContext);
 

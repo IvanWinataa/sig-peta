@@ -7,6 +7,7 @@ const inputCls =
  * Baris dropdown + field tambahan (nama dokter / keterangan)
  * @param {'spesialis'|'fasilitas'} mode
  */
+// Komponen React untuk memilih data multi-baris berupa kombinasi pilihan dropdown master dan input teks keterangan tambahan
 export default function MasterRowPicker({
   mode,
   masterOptions = [],
@@ -20,15 +21,18 @@ export default function MasterRowPicker({
   const extraKey = mode === 'spesialis' ? 'nama_dokter' : 'keterangan';
   const optionLabel = mode === 'spesialis' ? 'nama_spesialis' : 'nama_jenis';
 
+  // Menambahkan baris input kosong baru ke dalam state list picker
   const addRow = () => {
     onChange([...rows, { [idKey]: '', [extraKey]: '' }]);
   };
 
+  // Memperbarui nilai suatu field pada indeks baris tertentu di list picker
   const updateRow = (index, field, value) => {
     const next = rows.map((r, i) => (i === index ? { ...r, [field]: value } : r));
     onChange(next);
   };
 
+  // Menghapus satu baris data dari list picker berdasarkan indeks barisnya
   const removeRow = (index) => {
     onChange(rows.filter((_, i) => i !== index));
   };

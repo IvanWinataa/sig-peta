@@ -1,6 +1,7 @@
 const pool = require('../config/db');
 const { FASILITAS_SELECT, buildListQuery } = require('../utils/fasilitasQuery');
 
+// Menormalkan input kolom JSON agar bertipe string JSON valid (atau null) saat disimpan ke database
 function normalizeJsonField(val) {
   if (val == null || val === '') return null;
   try {
@@ -11,6 +12,7 @@ function normalizeJsonField(val) {
   }
 }
 
+// Mengubah properti mentah di req.body (FormData) menjadi objek dengan tipe data terstruktur yang benar
 function parseBody(body) {
   return {
     nama_fasilitas: body.nama_fasilitas,
@@ -30,6 +32,7 @@ function parseBody(body) {
   };
 }
 
+// Menyimpan fasilitas kesehatan baru ke database dengan menandai pemiliknya (created_by)
 async function createFasilitas(req, res) {
   try {
     const data = parseBody(req.body);
@@ -63,6 +66,7 @@ async function createFasilitas(req, res) {
   }
 }
 
+// Memperbarui data fasilitas kesehatan yang sudah ada di database berdasarkan ID
 async function updateFasilitas(req, res) {
   try {
     const data = parseBody(req.body);
@@ -105,6 +109,7 @@ async function updateFasilitas(req, res) {
   }
 }
 
+// Menghapus data fasilitas kesehatan dari database berdasarkan ID
 async function deleteFasilitas(req, res) {
   try {
     await pool.query('DELETE FROM fasilitas_kesehatan WHERE id = $1', [req.params.id]);
@@ -115,6 +120,7 @@ async function deleteFasilitas(req, res) {
   }
 }
 
+// Mengambil daftar fasilitas kesehatan yang dibuat oleh user yang sedang login saja
 async function getMyFasilitas(req, res) {
   try {
     const page = parseInt(req.query.page, 10) || 1;

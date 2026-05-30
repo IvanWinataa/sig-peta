@@ -22,11 +22,13 @@ export const CATEGORY_ICON_MAP = {
   ambulance: Ambulance,
 };
 
+// Mengambil komponen ikon Lucide berdasarkan nama string ikon (fallback ke ikon Building2 jika tidak ditemukan)
 export function getCategoryIcon(iconKey) {
   return CATEGORY_ICON_MAP[iconKey] || Building2;
 }
 
 /** For use in JSX: <CategoryIcon iconKey="hospital" className="w-4 h-4" /> */
+// Komponen React untuk menampilkan ikon kategori kesehatan yang sesuai berdasarkan key ikon dari database
 export function CategoryIcon({ iconKey, className = 'w-4 h-4', style }) {
   const Icon = getCategoryIcon(iconKey);
   return <Icon className={className} style={style} />;

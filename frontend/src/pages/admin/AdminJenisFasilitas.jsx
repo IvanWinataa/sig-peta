@@ -10,18 +10,23 @@ import {
   deleteJenisFasilitas,
 } from '../../services/masterService';
 
+// Komponen internal untuk mengelola master data jenis fasilitas (menampilkan, menambah, mengubah, dan menghapus)
 function Content() {
   const [data, setData] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [editing, setEditing] = useState(null);
   const [nama, setNama] = useState('');
 
+  // Memuat data list jenis fasilitas dari API master admin
   const load = () => getJenisFasilitasAdmin().then((r) => setData(r.data.data));
   useEffect(() => { load(); }, []);
 
+  // Membuka modal form untuk menambah jenis fasilitas baru
   const openAdd = () => { setEditing(null); setNama(''); setModalOpen(true); };
+  // Membuka modal form untuk mengubah nama jenis fasilitas yang sudah ada
   const openEdit = (row) => { setEditing(row); setNama(row.nama_jenis); setModalOpen(true); };
 
+  // Menyimpan jenis fasilitas baru atau perubahan jenis fasilitas yang diedit ke database
   const handleSave = async (e) => {
     e.preventDefault();
     try {
@@ -34,6 +39,7 @@ function Content() {
     }
   };
 
+  // Menghapus data jenis fasilitas berdasarkan ID jenis fasilitas melalui API master admin
   const handleDelete = async (id) => {
     if (!window.confirm('Hapus jenis fasilitas ini?')) return;
     try {
@@ -85,6 +91,7 @@ function Content() {
   );
 }
 
+// Komponen Halaman Kelola Master Jenis Fasilitas untuk admin yang terproteksi hak akses adminOnly
 export default function AdminJenisFasilitas() {
   return <ProtectedRoute adminOnly><Content /></ProtectedRoute>;
 }

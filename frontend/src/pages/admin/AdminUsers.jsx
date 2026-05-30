@@ -4,18 +4,22 @@ import Topbar from '../../components/layout/Topbar';
 import ProtectedRoute from '../../components/layout/ProtectedRoute';
 import { getUsers, updateUser, deleteUser } from '../../services/adminService';
 
+// Komponen internal untuk menampilkan daftar user, mengubah role user, dan menghapus user (admin only)
 function AdminUsersContent() {
   const [users, setUsers] = useState([]);
 
+  // Memuat data seluruh user terdaftar dari API admin
   const load = () => getUsers().then((r) => setUsers(r.data.data));
   useEffect(() => { load(); }, []);
 
+  // Mengubah role user (menjadi user biasa atau administrator) berdasarkan ID user
   const changeRole = async (id, role) => {
     const u = users.find((x) => x.id === id);
     await updateUser(id, { nama: u.nama, role });
     await load();
   };
 
+  // Menghapus akun user berdasarkan ID user melalui API admin
   const handleDelete = async (id) => {
     if (!window.confirm('Hapus user?')) return;
     try {
@@ -71,6 +75,7 @@ function AdminUsersContent() {
   );
 }
 
+// Komponen Halaman Kelola Pengguna untuk admin yang terproteksi hak akses adminOnly
 export default function AdminUsers() {
   return <ProtectedRoute adminOnly><AdminUsersContent /></ProtectedRoute>;
 }

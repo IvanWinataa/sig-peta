@@ -3,12 +3,14 @@ import { Link, useNavigate } from 'react-router-dom';
 import { MapPin } from 'lucide-react';
 import { register } from '../../services/authService';
 
+// Komponen Halaman Register untuk melakukan registrasi/pendaftaran akun pengguna baru
 export default function Register() {
   const navigate = useNavigate();
   const [form, setForm] = useState({ nama: '', email: '', password: '', confirm: '' });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
+  // Menangani submit form pendaftaran setelah memvalidasi password dan mengirimkan data registrasi ke API Auth
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (form.password !== form.confirm) {
@@ -27,6 +29,7 @@ export default function Register() {
     }
   };
 
+  // Helper untuk memperbarui salah satu field data pada form pendaftaran
   const set = (k, v) => setForm((f) => ({ ...f, [k]: v }));
   const inputCls = 'w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none';
 

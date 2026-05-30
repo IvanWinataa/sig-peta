@@ -1,6 +1,7 @@
 const pool = require('../config/db');
 
 // --- Public ---
+// Mengambil daftar spesialis untuk konsumsi publik (hanya ID dan nama spesialis)
 async function getSpesialisPublic(_req, res) {
   try {
     const result = await pool.query(
@@ -13,6 +14,7 @@ async function getSpesialisPublic(_req, res) {
   }
 }
 
+// Mengambil daftar jenis fasilitas kesehatan untuk konsumsi publik (hanya ID dan nama jenis)
 async function getJenisFasilitasPublic(_req, res) {
   try {
     const result = await pool.query(
@@ -26,6 +28,7 @@ async function getJenisFasilitasPublic(_req, res) {
 }
 
 // --- Admin Spesialis ---
+// Mengambil daftar lengkap master data dokter spesialis untuk admin
 async function getSpesialisAdmin(_req, res) {
   try {
     const result = await pool.query('SELECT * FROM master_spesialis ORDER BY id');
@@ -36,6 +39,7 @@ async function getSpesialisAdmin(_req, res) {
   }
 }
 
+// Membuat entri master dokter spesialis baru oleh admin
 async function createSpesialis(req, res) {
   try {
     const { nama_spesialis } = req.body;
@@ -53,6 +57,7 @@ async function createSpesialis(req, res) {
   }
 }
 
+// Memperbarui nama master dokter spesialis berdasarkan ID
 async function updateSpesialis(req, res) {
   try {
     const { nama_spesialis } = req.body;
@@ -70,6 +75,7 @@ async function updateSpesialis(req, res) {
   }
 }
 
+// Menghapus entri dokter spesialis berdasarkan ID
 async function deleteSpesialis(req, res) {
   try {
     await pool.query('DELETE FROM master_spesialis WHERE id = $1', [req.params.id]);
@@ -81,6 +87,7 @@ async function deleteSpesialis(req, res) {
 }
 
 // --- Admin Jenis Fasilitas ---
+// Mengambil daftar lengkap master jenis fasilitas kesehatan untuk admin
 async function getJenisFasilitasAdmin(_req, res) {
   try {
     const result = await pool.query('SELECT * FROM master_jenis_fasilitas ORDER BY id');
@@ -91,6 +98,7 @@ async function getJenisFasilitasAdmin(_req, res) {
   }
 }
 
+// Membuat entri master jenis fasilitas baru oleh admin
 async function createJenisFasilitas(req, res) {
   try {
     const { nama_jenis } = req.body;
@@ -108,6 +116,7 @@ async function createJenisFasilitas(req, res) {
   }
 }
 
+// Memperbarui nama master jenis fasilitas kesehatan berdasarkan ID
 async function updateJenisFasilitas(req, res) {
   try {
     const { nama_jenis } = req.body;
@@ -125,6 +134,7 @@ async function updateJenisFasilitas(req, res) {
   }
 }
 
+// Menghapus entri jenis fasilitas berdasarkan ID
 async function deleteJenisFasilitas(req, res) {
   try {
     await pool.query('DELETE FROM master_jenis_fasilitas WHERE id = $1', [req.params.id]);

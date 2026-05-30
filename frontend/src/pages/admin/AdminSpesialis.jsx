@@ -10,18 +10,23 @@ import {
   deleteSpesialis,
 } from '../../services/masterService';
 
+// Komponen internal untuk mengelola master data spesialis dokter (menampilkan, menambah, mengubah, dan menghapus)
 function Content() {
   const [data, setData] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [editing, setEditing] = useState(null);
   const [nama, setNama] = useState('');
 
+  // Memuat data list spesialis dokter dari API master admin
   const load = () => getSpesialisAdmin().then((r) => setData(r.data.data));
   useEffect(() => { load(); }, []);
 
+  // Membuka modal form untuk menambah data spesialis baru
   const openAdd = () => { setEditing(null); setNama(''); setModalOpen(true); };
+  // Membuka modal form untuk mengubah nama spesialis dokter yang sudah ada
   const openEdit = (row) => { setEditing(row); setNama(row.nama_spesialis); setModalOpen(true); };
 
+  // Menyimpan data spesialis baru atau perubahan spesialis yang diedit ke database
   const handleSave = async (e) => {
     e.preventDefault();
     try {
@@ -34,6 +39,7 @@ function Content() {
     }
   };
 
+  // Menghapus data spesialis berdasarkan ID spesialis melalui API master admin
   const handleDelete = async (id) => {
     if (!window.confirm('Hapus jenis spesialis ini?')) return;
     try {
@@ -85,6 +91,7 @@ function Content() {
   );
 }
 
+// Komponen Halaman Kelola Master Spesialis Dokter untuk admin yang terproteksi hak akses adminOnly
 export default function AdminSpesialis() {
   return <ProtectedRoute adminOnly><Content /></ProtectedRoute>;
 }

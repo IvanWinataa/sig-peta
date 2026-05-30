@@ -1,5 +1,6 @@
 import { X } from 'lucide-react';
 
+// Komponen React reusable untuk merender dialog box modal overlay (popup) dengan header, tombol tutup, dan scrollable body
 export default function Modal({ open, onClose, title, children, size = 'lg' }) {
   if (!open) return null;
 

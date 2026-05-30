@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { MapPin } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 
+// Komponen Halaman Login untuk autentikasi pengguna masuk ke dalam sistem
 export default function Login() {
   const { login } = useAuth();
   const navigate = useNavigate();
@@ -11,6 +12,7 @@ export default function Login() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
+  // Menangani submit form login untuk memverifikasi email dan password ke API Auth
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');

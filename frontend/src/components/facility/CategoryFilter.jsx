@@ -1,6 +1,8 @@
 import { CategoryIcon } from '../../utils/categoryIcons';
 
+// Komponen React untuk merender deretan chip tombol filter kategori fasilitas kesehatan di peta
 export default function CategoryFilter({ kategori = [], selectedIds = [], onChange }) {
+  // Fungsi untuk menambah atau menghapus ID kategori tertentu dari daftar kategori terpilih
   const toggle = (id) => {
     if (selectedIds.includes(id)) {
       onChange(selectedIds.filter((x) => x !== id));
@@ -9,6 +11,7 @@ export default function CategoryFilter({ kategori = [], selectedIds = [], onChan
     }
   };
 
+  // Fungsi untuk mengosongkan filter kategori terpilih sehingga semua data kategori ditampilkan kembali
   const selectAll = () => onChange([]);
 
   return (

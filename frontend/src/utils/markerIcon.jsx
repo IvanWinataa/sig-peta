@@ -3,6 +3,7 @@ import { getCategoryIcon } from './categoryIcons';
 
 const TAG = 'd' + 'iv';
 
+// Membuat dan mengembalikan L.divIcon custom untuk marker fasilitas kesehatan (dengan warna spesifik dan animasi radar jika marker aktif/dipilih)
 export function buildLeafletDivIcon(iconKey, color, isActive, L) {
   const Icon = getCategoryIcon(iconKey);
   const svg = renderToStaticMarkup(
@@ -39,6 +40,7 @@ export function buildLeafletDivIcon(iconKey, color, isActive, L) {
   });
 }
 
+// Membuat dan mengembalikan L.divIcon khusus berupa dot biru berkedip (pulsing) untuk menunjukkan lokasi geolocation pengguna saat ini
 export function buildUserLocationIcon(L) {
   const html = `<${TAG} class="user-location-pulse" style="width:16px;height:16px;"></${TAG}>`;
   return L.divIcon({

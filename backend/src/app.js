@@ -22,6 +22,7 @@ app.use(express.urlencoded({ extended: true }));
 const uploadDir = process.env.UPLOAD_DIR || './uploads';
 app.use('/uploads', express.static(path.resolve(uploadDir)));
 
+// Handler API health check untuk memverifikasi apakah server backend berjalan dengan baik
 app.get('/api/health', (_req, res) => {
   res.json({ success: true, message: 'HealthMap Bali API is running' });
 });
@@ -31,6 +32,7 @@ app.use('/api/public', publicRoutes);
 app.use('/api/private', privateRoutes);
 app.use('/api/admin', adminRoutes);
 
+// Middleware global untuk menangani error Express, terutama mendeteksi format file multer yang tidak valid
 app.use((err, _req, res, _next) => {
   if (err.message?.includes('Format file')) {
     return res.status(422).json({ success: false, message: err.message });

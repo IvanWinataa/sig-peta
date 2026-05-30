@@ -4,6 +4,7 @@ const api = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL || '/api',
 });
 
+// Interseptor request untuk otomatis menambahkan token JWT ke header Authorization jika tersedia
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('healthmap_token');
   if (token) {
@@ -12,6 +13,7 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
+// Interseptor respons untuk mendeteksi error 401 (tidak sah) secara global dan mengalihkan pengguna ke halaman login
 api.interceptors.response.use(
   (res) => res,
   (error) => {

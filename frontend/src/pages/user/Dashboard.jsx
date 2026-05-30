@@ -8,6 +8,7 @@ import { getAllFasilitas } from '../../services/adminService';
 import { useAuth } from '../../context/AuthContext';
 import { CategoryIcon } from '../../utils/categoryIcons';
 
+// Komponen internal untuk menampilkan ringkasan data statistik marker dan daftar marker terbaru
 function DashboardContent() {
   const [data, setData] = useState([]);
   const { isAdmin } = useAuth();
@@ -73,6 +74,7 @@ function DashboardContent() {
   );
 }
 
+// Komponen Halaman Dashboard yang terproteksi oleh login dan menampilkan informasi statistik marker milik user/admin
 export default function Dashboard() {
   return <ProtectedRoute><DashboardContent /></ProtectedRoute>;
 }

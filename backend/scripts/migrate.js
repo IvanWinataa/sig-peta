@@ -2,6 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const pool = require('../src/config/db');
 
+// Menjalankan skrip migrasi database dengan mengeksekusi semua file SQL secara berurutan
 async function migrate() {
   const dir = path.join(__dirname, '../migrations');
   const files = fs.readdirSync(dir).filter((f) => f.endsWith('.sql')).sort();

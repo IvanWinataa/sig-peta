@@ -2,14 +2,17 @@ import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { MapPin, LogIn, LogOut, User, Shield, ChevronDown } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 
+// Komponen React untuk merender navigasi atas (topbar) yang berisi logo, menu navigasi utama, profil user, edit mode, dan tombol login/logout
 export default function Topbar({ editMode, onToggleEditMode, onLocateMe }) {
   const { user, logout, isAdmin } = useAuth();
   const navigate = useNavigate();
 
+  // Helper untuk menentukan class CSS dinamis menu navigasi berdasarkan status keaktifan link
   const linkClass = ({ isActive }) =>
     `px-4 py-2 rounded-full text-sm font-semibold transition-all whitespace-nowrap ${isActive ? 'bg-teal-50 text-teal-700 shadow-sm' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
     }`;
 
+  // Helper untuk menentukan class CSS dinamis submenu dropdown navigasi berdasarkan status keaktifan link
   const dropdownLinkClass = ({ isActive }) =>
     `block px-4 py-2 text-sm font-medium transition-colors whitespace-nowrap ${isActive ? 'bg-teal-50 text-teal-700' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
     }`;

@@ -4,6 +4,7 @@ const { validationResult } = require('express-validator');
 const pool = require('../config/db');
 const { secret, expiresIn } = require('../config/jwt');
 
+// Membuat dan menandatangani JWT (JSON Web Token) berisi data profil user
 function signToken(user) {
   return jwt.sign(
     { id: user.id, email: user.email, role: user.role, nama: user.nama },
@@ -12,10 +13,12 @@ function signToken(user) {
   );
 }
 
+// Memformat baris objek user dari database menjadi format respons yang aman (tanpa password)
 function userResponse(row) {
   return { id: row.id, nama: row.nama, email: row.email, role: row.role };
 }
 
+// Mendaftarkan akun user baru ke database setelah validasi input dan mengenkripsi password
 async function register(req, res) {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -47,6 +50,7 @@ async function register(req, res) {
   }
 }
 
+// Melakukan verifikasi email dan password untuk login serta mengirimkan JWT token jika sukses
 async function login(req, res) {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -83,6 +87,7 @@ async function login(req, res) {
   }
 }
 
+// Mengambil profil user yang sedang login berdasarkan ID yang didekode dari JWT token
 async function me(req, res) {
   try {
     const result = await pool.query(

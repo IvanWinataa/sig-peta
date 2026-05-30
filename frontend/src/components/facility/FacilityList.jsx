@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react';
 import { Check, Clock } from 'lucide-react';
 import { CategoryIcon } from '../../utils/categoryIcons';
 
+// Komponen React untuk menampilkan daftar list fasilitas kesehatan pada sidebar sebelah kiri peta dengan fitur klik & hover item
 export default function FacilityList({
   facilities,
   activeId,

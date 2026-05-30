@@ -1,6 +1,7 @@
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 
+// Komponen React untuk memproteksi halaman rute agar hanya dapat diakses oleh user yang telah login (dan secara opsional hanya untuk admin)
 export default function ProtectedRoute({ children, adminOnly = false }) {
   const { user, loading } = useAuth();
 

@@ -17,6 +17,7 @@ const emptyForm = {
   deskripsi: '',
 };
 
+// Komponen React untuk merender form modal tambah/edit fasilitas kesehatan lengkap dengan atribut dinamis per kategori
 export default function FacilityModal({
   open,
   onClose,
@@ -94,8 +95,10 @@ export default function FacilityModal({
     }
   }, [open, initial]);
 
+  // Helper untuk memperbarui nilai satu field pada form utama
   const set = (key, val) => setForm((f) => ({ ...f, [key]: val }));
 
+  // Helper untuk memperbarui nilai atribut khusus dinamis dan otomatis menyinkronkan dengan kolom bawaan (BPJS/Operasional 24 Jam)
   const setCustomValue = (key, val) => {
     setAtributKhusus((prev) => {
       const next = { ...prev, [key]: val };
@@ -112,6 +115,7 @@ export default function FacilityModal({
     });
   };
 
+  // Menangani perubahan kategori terpilih pada form untuk mereset atribut khusus bawaan kategori lama
   const handleKategoriChange = (newKategoriId) => {
     set('kategori_id', newKategoriId);
     setAtributKhusus({});
@@ -119,6 +123,7 @@ export default function FacilityModal({
     set('status_24_jam', false);
   };
 
+  // Mengubah data list dokter spesialis berelasi menjadi format string JSON yang valid sebelum dikirim ke database
   const buildSpesialisJson = () =>
     JSON.stringify(
       spesialisRows
@@ -129,6 +134,7 @@ export default function FacilityModal({
         }))
     );
 
+  // Mengubah data list fasilitas berelasi menjadi format string JSON yang valid sebelum dikirim ke database
   const buildFasilitasJson = () =>
     JSON.stringify(
       fasilitasRows
@@ -139,6 +145,7 @@ export default function FacilityModal({
         }))
     );
 
+  // Menangani pengiriman form (submit): membuat objek FormData dan memanggil fungsi onSubmit yang dikirim oleh parent
   const handleSubmit = (e) => {
     e.preventDefault();
     const fd = new FormData();

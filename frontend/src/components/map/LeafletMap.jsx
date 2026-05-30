@@ -11,6 +11,7 @@ const DEFAULT_ZOOM = 10;
  * Peta Leaflet.js vanilla (tanpa react-leaflet).
  * Semua layer dikelola via useEffect + ref.
  */
+// Komponen utama peta menggunakan Leaflet.js untuk menampilkan marker cluster, rute, dan lokasi user
 export default function LeafletMap({
   facilities = [],
   activeId = null,
@@ -58,6 +59,7 @@ export default function LeafletMap({
     mapRef.current = map;
     clusterRef.current = cluster;
 
+    // Menangani aksi klik pada area peta (mode edit mengambil koordinat lat/lng, mode biasa me-reset active marker)
     const handleClick = (e) => {
       if (editModeRef.current) {
         if (onMapClickRef.current) onMapClickRef.current(e.latlng);

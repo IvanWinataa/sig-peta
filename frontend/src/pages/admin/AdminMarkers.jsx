@@ -5,12 +5,15 @@ import ProtectedRoute from '../../components/layout/ProtectedRoute';
 import { getAllFasilitas, deleteFasilitasAdmin } from '../../services/adminService';
 import { CategoryIcon } from '../../utils/categoryIcons';
 
+// Komponen internal untuk mengelola semua marker fasilitas kesehatan dalam sistem oleh admin
 function AdminMarkersContent() {
   const [data, setData] = useState([]);
 
+  // Memuat data seluruh fasilitas kesehatan yang ada di database
   const load = () => getAllFasilitas({ limit: 200 }).then((r) => setData(r.data.data));
   useEffect(() => { load(); }, []);
 
+  // Menangani aksi hapus fasilitas kesehatan oleh admin berdasarkan ID melalui API admin
   const handleDelete = async (id) => {
     if (!window.confirm('Hapus fasilitas ini?')) return;
     await deleteFasilitasAdmin(id);
@@ -58,6 +61,7 @@ function AdminMarkersContent() {
   );
 }
 
+// Komponen Halaman Kelola Semua Marker untuk admin yang terproteksi hak akses adminOnly
 export default function AdminMarkers() {
   return <ProtectedRoute adminOnly><AdminMarkersContent /></ProtectedRoute>;
 }

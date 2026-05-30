@@ -1,6 +1,7 @@
 const bcrypt = require('bcryptjs');
 const pool = require('../src/config/db');
 
+// Mengisi database dengan data awal default seperti kategori, master spesialis, master jenis fasilitas, dan akun administrator
 async function seed() {
   const kategoriCount = await pool.query('SELECT COUNT(*) FROM kategori');
   if (Number(kategoriCount.rows[0].count) === 0) {

@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { Map, Navigation, Table, Hospital, Stethoscope, Pill, ArrowRight, HeartPulse, FlaskConical, UserRound } from 'lucide-react';
 import Topbar from '../../components/layout/Topbar';
 
+// Komponen Halaman Utama (Landing Page) yang berisi ringkasan fitur, logo kategori kesehatan, dan tombol navigasi utama
 export default function Home() {
   return (
     <div className="min-h-screen flex flex-col bg-slate-50 relative overflow-hidden">

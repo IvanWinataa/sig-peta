@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Search, ChevronLeft, ChevronRight, ChevronDown, Clock, Mail, Globe, Shield, MapPin } from 'lucide-react';
+import { Search, ChevronLeft, ChevronRight, ChevronDown, Clock, Mail, Shield, MapPin } from 'lucide-react';
 import Topbar from '../../components/layout/Topbar';
 import { getKategori, getFasilitas, getSpesialis, getJenisFasilitas } from '../../services/publicService';
 import { CategoryIcon } from '../../utils/categoryIcons';
@@ -7,6 +7,7 @@ import { formatSpesialisDisplay, formatFasilitasDisplay } from '../../utils/faci
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL?.replace('/api', '') || 'http://localhost:5000';
 
+// Halaman untuk menampilkan tabel data fasilitas kesehatan dengan fitur pencarian, filter kategori, pengurutan kolom, dan paginasi
 export default function DataFasilitas() {
   const [data, setData] = useState([]);
   const [kategori, setKategori] = useState([]);
@@ -49,6 +50,7 @@ export default function DataFasilitas() {
     return () => clearTimeout(t);
   }, [page, search, kategoriId, sort, order]);
 
+  // Fungsi untuk mengubah jenis kolom pengurutan (sort) atau arah pengurutannya (asc/desc) saat kolom diklik
   const toggleSort = (col) => {
     if (sort === col) setOrder((o) => (o === 'asc' ? 'desc' : 'asc'));
     else { setSort(col); setOrder('asc'); }
@@ -56,6 +58,7 @@ export default function DataFasilitas() {
     setExpandedId(null);
   };
 
+  // Komponen pembantu untuk merender header kolom tabel (th) yang interaktif untuk pengurutan data
   const SortTh = ({ col, children }) => (
     <th
       className="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase cursor-pointer hover:bg-gray-100 select-none"
@@ -102,7 +105,7 @@ export default function DataFasilitas() {
                   <SortTh col="nama_fasilitas">Nama</SortTh>
                   <SortTh col="kategori">Kategori</SortTh>
                   <SortTh col="alamat">Alamat</SortTh>
-                  <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600">BPJS</th>
+                  
                   <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600">24 Jam</th>
                   <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600">Telepon</th>
                   <th className="px-4 py-3 text-center text-xs font-semibold text-gray-600 w-16">Detail</th>

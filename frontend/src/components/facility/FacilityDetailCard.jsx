@@ -6,8 +6,6 @@ import {
   Navigation,
   Pencil,
   Trash2,
-  Stethoscope,
-  Building2,
   X,
 } from 'lucide-react';
 import { CategoryIcon } from '../../utils/categoryIcons';
@@ -15,6 +13,7 @@ import { formatSpesialisDisplay, formatFasilitasDisplay } from '../../utils/faci
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL?.replace('/api', '') || 'http://localhost:5000';
 
+// Komponen React untuk menampilkan kartu detail lengkap dari sebuah fasilitas kesehatan (foto, kontak, spesialisasi, dan atribut dinamis)
 export default function FacilityDetailCard({
   facility,
   masterSpesialis = [],
@@ -41,9 +40,6 @@ export default function FacilityDetailCard({
       ? facility.foto
       : `${API_BASE}${facility.foto}`
     : null;
-
-  const spesialisLines = formatSpesialisDisplay(facility.dokter_spesialis, masterSpesialis);
-  const fasilitasLines = formatFasilitasDisplay(facility.fasilitas, masterJenisFasilitas);
 
   // Parse atribut_khusus
   let atributKhusus = {};

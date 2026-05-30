@@ -1,5 +1,6 @@
 const pool = require('../config/db');
 
+// Middleware untuk memastikan bahwa user yang mengedit/menghapus fasilitas adalah pembuat asli fasilitas tersebut atau admin
 async function checkOwnership(req, res, next) {
   if (req.user.role === 'admin') return next();
 

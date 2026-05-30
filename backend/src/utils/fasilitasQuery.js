@@ -20,6 +20,7 @@ const SORTABLE = {
   created_at: 'f.created_at',
 };
 
+// Membangun query SQL dinamis untuk hitung total baris (COUNT) dan ambil data fasilitas kesehatan beserta filternya
 function buildListQuery({ kategori_id, search, created_by, page = 1, limit = 100, sort = 'nama_fasilitas', order = 'asc' }) {
   const conditions = [];
   const params = [];

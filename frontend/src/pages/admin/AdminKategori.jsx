@@ -8,6 +8,7 @@ import { CategoryIcon, CATEGORY_ICON_MAP } from '../../utils/categoryIcons';
 
 const ICON_OPTIONS = Object.keys(CATEGORY_ICON_MAP);
 
+// Komponen internal untuk mengelola master data kategori fasilitas kesehatan beserta skema atribut kustomnya
 function AdminKategoriContent() {
   const [data, setData] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
@@ -19,9 +20,11 @@ function AdminKategoriContent() {
     skema_atribut: [],
   });
 
+  // Memuat seluruh kategori beserta konfigurasi ikon dan warna marker dari API admin
   const load = () => getKategoriAdmin().then((r) => setData(r.data.data));
   useEffect(() => { load(); }, []);
 
+  // Membuka modal form untuk membuat kategori baru
   const openAdd = () => {
     setEditing(null);
     setForm({
@@ -33,6 +36,7 @@ function AdminKategoriContent() {
     setModalOpen(true);
   };
 
+  // Membuka modal form untuk mengedit kategori fasilitas kesehatan yang ada
   const openEdit = (k) => {
     setEditing(k);
     const skema = Array.isArray(k.skema_atribut) ? k.skema_atribut : [];
@@ -45,6 +49,7 @@ function AdminKategoriContent() {
     setModalOpen(true);
   };
 
+  // Menyimpan data kategori baru atau perubahan kategori yang diedit ke backend database
   const handleSave = async (e) => {
     e.preventDefault();
     try {
@@ -57,6 +62,7 @@ function AdminKategoriContent() {
     }
   };
 
+  // Menghapus data kategori berdasarkan ID (hanya jika kategori tersebut belum digunakan fasilitas)
   const handleDelete = async (id) => {
     if (!window.confirm('Hapus kategori?')) return;
     try {
@@ -67,6 +73,7 @@ function AdminKategoriContent() {
     }
   };
 
+  // Menambahkan satu baris skema atribut dinamis baru ke dalam form kategori
   const handleAddAtribut = () => {
     setForm((f) => ({
       ...f,
@@ -74,6 +81,7 @@ function AdminKategoriContent() {
     }));
   };
 
+  // Menghapus salah satu skema atribut dinamis berdasarkan indeks
   const handleRemoveAtribut = (idx) => {
     setForm((f) => ({
       ...f,
@@ -81,6 +89,7 @@ function AdminKategoriContent() {
     }));
   };
 
+  // Memperbarui properti field (nama, label, tipe) pada skema atribut dinamis
   const handleUpdateAtribut = (idx, key, val) => {
     setForm((f) => {
       const updated = [...(f.skema_atribut || [])];
@@ -247,6 +256,7 @@ function AdminKategoriContent() {
   );
 }
 
+// Komponen Halaman Kelola Kategori untuk admin yang terproteksi hak akses adminOnly
 export default function AdminKategori() {
   return <ProtectedRoute adminOnly><AdminKategoriContent /></ProtectedRoute>;
 }
